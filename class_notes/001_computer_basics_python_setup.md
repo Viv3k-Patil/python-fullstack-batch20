@@ -1,3 +1,38 @@
+Why Python?
+
+Language qualities
+
+Readable, concise syntax — fast to write and maintain
+Dynamically typed, interpreted — quick iteration, no compile step
+Huge standard library ("batteries included")
+Runs everywhere: Linux, macOS, Windows, embedded, web (via WASM)
+
+Major use cases
+
+Data science / ML — dominant language for analytics, modeling, research
+Web backend — APIs, full-stack apps
+Automation/scripting — glue code, DevOps, sysadmin tasks
+Scientific computing — simulations, numerical work
+AI/LLM tooling — most model training & inference code, agent frameworks
+Education — common first language taught
+
+Ecosystem highlights
+
+Domain	Key libraries
+Data	pandas, numpy, polars
+ML/AI	PyTorch, TensorFlow, scikit-learn, Hugging Face
+Web	Django, Flask, FastAPI
+Automation	requests, click, Ansible
+Testing	pytest
+Visualization	matplotlib, plotly, seaborn
+Packaging	pip, poetry, conda
+
+Why it wins
+
+Low barrier to entry → huge community → more libraries → more adoption (network effect)
+De facto standard for ML/AI, so it's the "glue" between research and production
+Trade-off: slower raw execution speed than compiled languages, mitigated by C-backed libraries (numpy, etc.) and JIT tools (PyPy, Numba)
+
 # 📚 Introduction to Computers
 
 ## 🎯 Learning Objectives
