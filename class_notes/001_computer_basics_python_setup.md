@@ -32,7 +32,7 @@ Why it wins
 Low barrier to entry → huge community → more libraries → more adoption (network effect)
 De facto standard for ML/AI, so it's the "glue" between research and production
 Trade-off: slower raw execution speed than compiled languages, mitigated by C-backed libraries (numpy, etc.) and JIT tools (PyPy, Numba)
-
+---
 # 📚 Introduction to Computers
 
 ## 🎯 Learning Objectives
