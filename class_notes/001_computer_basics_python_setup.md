@@ -1,31 +1,31 @@
-Why Python?
+# Why Python?
 
 Language qualities
 
-Readable, concise syntax — fast to write and maintain
-Dynamically typed, interpreted — quick iteration, no compile step
-Huge standard library ("batteries included")
-Runs everywhere: Linux, macOS, Windows, embedded, web (via WASM)
+* Readable, concise syntax — fast to write and maintain
+* Dynamically typed, interpreted — quick iteration, no compile step
+* Huge standard library ("batteries included")
+* Runs everywhere: Linux, macOS, Windows, embedded, web (via WASM)
 
 Major use cases
 
-Data science / ML — dominant language for analytics, modeling, research
-Web backend — APIs, full-stack apps
-Automation/scripting — glue code, DevOps, sysadmin tasks
-Scientific computing — simulations, numerical work
-AI/LLM tooling — most model training & inference code, agent frameworks
-Education — common first language taught
+* Data science / ML — dominant language for analytics, modeling, research
+* Web backend — APIs, full-stack apps
+* Automation/scripting — glue code, DevOps, sysadmin tasks
+* Scientific computing — simulations, numerical work
+* AI/LLM tooling — most model training & inference code, agent frameworks
+* Education — common first language taught
 
 Ecosystem highlights
 
 Domain	Key libraries
-Data	pandas, numpy, polars
-ML/AI	PyTorch, TensorFlow, scikit-learn, Hugging Face
-Web	Django, Flask, FastAPI
-Automation	requests, click, Ansible
-Testing	pytest
-Visualization	matplotlib, plotly, seaborn
-Packaging	pip, poetry, conda
+* Data	pandas, numpy, polars
+* ML/AI	PyTorch, TensorFlow, scikit-learn, Hugging Face
+* Web	Django, Flask, FastAPI
+* Automation	requests, click, Ansible
+* Testing	pytest
+* Visualization	matplotlib, plotly, seaborn
+* Packaging	pip, poetry, conda
 
 Why it wins
 
