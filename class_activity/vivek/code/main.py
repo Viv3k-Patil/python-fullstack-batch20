@@ -1,4 +1,4 @@
-import my_module
+import class_activity.vivek.code.my_module as my_module
 import random
 import datetime
 
