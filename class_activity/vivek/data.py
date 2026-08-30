@@ -5,9 +5,21 @@ my_society = {
     "buildings":{
         "building A": {
             "101": {
-                "resident": [],
+                "resident": [
+                    {
+                        "name": "resident 1"
+                    },
+                    {
+                        "name": "resident 1"
+                    }
+                ],
                 "area": "",
-                "complaints": []
+                "complaints": [],
+                "biils": [{
+                    "month": "Jan",
+                    "amount_due": 1560
+
+                }],
             },
             "102": {
                 "resident": [],
@@ -16,8 +28,8 @@ my_society = {
             }
         },
         "building B":{
-            "101":
-            "102":
+            "101":"",
+            "102":"",
         }
     },
     "parking_spots":{
@@ -25,12 +37,13 @@ my_society = {
         "guest_parking-01": "not-occupied"
     },
     "amenitis":{
-        "town hall":,
-        "gym":
-        "swimming_pool"
+        "club house":[
+            "30-08-2026",
+            "31-08-2026"
+        ],
+        "gym":[],
+        "swimming_pool":[]
     }
 }
-
-my_society[""] = 
 
 
