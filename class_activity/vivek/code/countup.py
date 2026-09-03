@@ -1,0 +1,28 @@
+
+
+class CountUp:
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.start > self.end:
+            raise StopIteration
+        result = self.start
+        self.start += 1
+        return result
+
+    
+    def __repr__(self):
+        return f"""
+            start: {self.start}
+            end: {self.end}
+        """
+
+counter = CountUp(5,10)
+
+for i in counter:
+    print(i)
