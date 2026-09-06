@@ -1,0 +1,32 @@
+2026-09-05 12:13:56,403 - DEBUG - Application starting up...
+2026-09-05 12:13:56,403 - INFO - User 'priya' logged in
+2026-09-05 12:13:56,403 - WARNING - API response took longer than expected
+2026-09-05 12:13:56,404 - ERROR - Failed to connect to payment gateway
+2026-09-05 12:13:56,404 - CRITICAL - Database is completely unreachable!
+2026-09-05 12:14:01,890 - DEBUG - Application starting up...
+2026-09-05 12:14:01,890 - INFO - User 'priya' logged in
+2026-09-05 12:14:01,890 - WARNING - API response took longer than expected
+2026-09-05 12:14:01,891 - ERROR - Failed to connect to payment gateway
+2026-09-05 12:14:01,892 - CRITICAL - Database is completely unreachable!
+2026-09-05 12:15:06,213 - DEBUG - Application starting up...
+2026-09-05 12:15:06,213 - INFO - User 'priya' logged in
+2026-09-05 12:15:06,213 - WARNING - API response took longer than expected
+2026-09-05 12:15:06,214 - ERROR - Failed to connect to payment gateway
+2026-09-05 12:15:06,214 - CRITICAL - Database is completely unreachable!
+2026-09-05 12:15:09,289 - DEBUG - Application starting up...
+2026-09-05 12:15:09,289 - INFO - User 'priya' logged in
+2026-09-05 12:15:09,289 - WARNING - API response took longer than expected
+2026-09-05 12:15:09,289 - ERROR - Failed to connect to payment gateway
+2026-09-05 12:15:09,289 - CRITICAL - Database is completely unreachable!
+2026-09-05 12:15:09,778 - DEBUG - Application starting up...
+2026-09-05 12:15:09,778 - INFO - User 'priya' logged in
+2026-09-05 12:15:09,778 - WARNING - API response took longer than expected
+2026-09-05 12:15:09,779 - ERROR - Failed to connect to payment gateway
+2026-09-05 12:15:09,779 - CRITICAL - Database is completely unreachable!
+2026-09-05 12:15:10,294 - DEBUG - Application starting up...
+2026-09-05 12:15:10,294 - INFO - User 'priya' logged in
+2026-09-05 12:15:10,294 - WARNING - API response took longer than expected
+2026-09-05 12:15:10,294 - ERROR - Failed to connect to payment gateway
+2026-09-05 12:15:10,294 - CRITICAL - Database is completely unreachable!
+2026-09-05 12:37:13,989 - DEBUG - Detailed debug info
+2026-09-05 12:37:13,989 - WARNING - Something looks off
