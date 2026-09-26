@@ -1,70 +1,30 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, Header, HTTPException
 
 app = FastAPI()
 
-students = {
-    1: {"name": "Rahul", "age": 20, "grade": "A"},
-    2: {"name": "Priya", "age": 21, "grade": "B+"},
-    3: {"name": "Amit", "age": 19, "grade": "A-"},
-    4: {"name": "Sneha", "age": 20, "grade": "B"},
-    5: {"name": "Arjun", "age": 22, "grade": "A+"}
-}
 
-@app.get('/health')
-def check_health():
-    return {
-        "health": "OK"
-    }
+def get_current_user(authorization: str = Header(None)):
+    if authorization != "Bearer secret-token-123":     # a STUB — a real app verifies a proper token
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    return {"username": "priya", "role": "admin"}
 
-@app.get('/root')
-def check_health():
-    return {
-        "path": "root"
-    }
 
-# get all students
-@app.get('/students')
-def get_all_students():
-    return {
-        "students": students
-    }
+@app.get("/profile")
+def read_profile(current_user: dict = Depends(get_current_user)):
+    return {"message": f"Welcome, {current_user['username']}!"}
 
-# get student by id
-# 2 -> Yogita
-# /students/2
-@app.get('/students/{student_id}')
-def get_student_by_id(student_id: int):
-    return {
-        "student": students[student_id]
-    }
+class RoleChecker:
+    def __init__(self, allowed_roles: list[str]):
+        self.allowed_roles = allowed_roles
 
-# query parameter
-# student_id
-# /students?id=2
-@app.get('/student')
-def get_student(id: int):
-    return {
-        "id": id,
-        "student": students[id]
-    }
+    def __call__(self, current_user: dict = Depends(get_current_user)):
+        if current_user["role"] not in self.allowed_roles:
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        return current_user
 
-# add a new student
-@app.post('/students')
-def create_student(id: int, name:str, age: int, grade: str):
-    students[id] = {
-        "name": name,
-        "age": age,
-        "grade": grade
-    }
-    return {
-        "message": "student added successfully"
-    }
 
-@app.delete('/students/{student_id}')
-def delete_student(student_id: int):
-    deleted_student = students.pop(student_id, None)
-    print(delete_student)
-    return {
-        "deleted": "true",
-        "deleted_id": student_id
-    }
+admin_only = RoleChecker(allowed_roles=["admin"])
+
+@app.get("/admin-dashboard")
+def admin_dashboard(user: dict = Depends(admin_only)):
+    return {"message": f"Welcome to the admin dashboard, {user['username']}!"}
