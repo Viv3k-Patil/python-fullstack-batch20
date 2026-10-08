@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form action="/submit" method="POST">
+        <label for="my_title">Task Title:</label>
+        <input type="text" id="my_title" name="title" maxLength="5" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="8"></textarea>
+
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority">
+            <option value="low">Low visible</option>
+            <option value="medium">Medium visible</option>
+            <option value="high">High visible</option>
+        </select>
+
+        <input type="text" name="username">
+        <input type="email" name="email">
+        <input type="password" name="password">
+        <input type="number" name="age">
+        <input type="date" name="birthdate">
+        <input type="checkbox" name="subscribe" id="subscribe">
+        <label for="subscribe">Subscribe to newsletter</label>
+        <input type="radio" name="gender" value="male" id="male">
+        <label for="male">Male</label>
+        <input type="radio" name="gender" value="female" id="female">
+        <label for="female">Female</label>
+
+        <button type="submit">Task Submit</button>
+    </form>
+
+    <form>
+    <label for="username">Username (required):</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="age">Age (18–65):</label>
+    <input type="number" id="age" name="age" min="18" max="65">
+
+    <label for="phone">Phone (10 digits, starts with 6–9):</label>
+    <input type="text" id="phone" name="phone" pattern="[6-9][0-9]{9}" title="10-digit Indian mobile number">
+
+    <button type="submit">Register</button>
+</form>
+    <p id="warning"> this is warning text</p>
+</body>
+</html>
