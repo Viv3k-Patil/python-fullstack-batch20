@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated 3D Small Town</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { overflow: hidden; font-family: Arial, sans-serif; background: #9ed9ff; }
+  canvas { display: block; }
+  #label {
+    position: fixed; top: 16px; left: 16px;
+    color: white; background: #173b35dd;
+    padding: 12px 16px; border-radius: 10px;
+    font-size: 14px; pointer-events: none;
+  }
+  #label strong { display: block; font-size: 19px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div id="label">
+  <strong>Little Town 3D</strong>
+  Cars • Buses • Walking people • Flying airplane
+</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x9ed9ff);
+scene.fog = new THREE.Fog(0x9ed9ff, 45, 110);
+
+const camera = new THREE.PerspectiveCamera(
+  55, innerWidth / innerHeight, 0.1, 180
+);
+camera.position.set(20, 23, 30);
+camera.lookAt(0, 0, 0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+// Lighting
+scene.add(new THREE.HemisphereLight(0xdaf1ff, 0x67794b, 2));
+
+const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+sun.position.set(-15, 30, 15);
+scene.add(sun);
+
+// Materials
+const mat = color => new THREE.MeshLambertMaterial({ color });
+const grassMat = mat(0x79bd67);
+const roadMat = mat(0x414952);
+const lineMat = mat(0xffffff);
+const barkMat = mat(0x795033);
+const leafColors = [0x287c45, 0x3d984e, 0x5cae54];
+const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+const cylGeo = new THREE.CylinderGeometry(1, 1, 1, 8);
+
+function box(parent, x, y, z, w, h, d, material) {
+  const mesh = new THREE.Mesh(boxGeo, material);
+  mesh.position.set(x, y, z);
+  mesh.scale.set(w, h, d);
+  parent.add(mesh);
+  return mesh;
+}
+
+function cylinder(parent, x, y, z, radius, height, material, sides=8) {
+  const mesh = new THREE.Mesh(
+    new THREE.CylinderGeometry(radius, radius, height, sides), material
+  );
+  mesh.position.set(x, y, z);
+  parent.add(mesh);
+  return mesh;
+}
+
+// Ground and roads
+box(scene, 0, -0.35, 0, 100, 0.5, 100, grassMat);
+box(scene, 0, 0, 0, 100, 0.08, 7, roadMat);
+box(scene, 0, 0.01, 0, 7, 0.09, 100, roadMat);
+
+// Dashed road markings
+for (let x = -47; x < 48; x += 5) {
+  box(scene, x, 0.055, 0, 2.2, 0.025, 0.12, lineMat);
+}
+for (let z = -47; z < 48; z += 5) {
+  box(scene, 0, 0.06, z, 0.12, 0.025, 2.2, lineMat);
+}
+
+// Crosswalks
+for (let i = -2; i <= 2; i++) {
+  box(scene, i * 0.7, 0.07, 4.5, 0.35, 0.025, 2, lineMat);
+  box(scene, 4.5, 0.07, i * 0.7, 2, 0.025, 0.35, lineMat);
+}
+
+// Sidewalks
+const sidewalk = mat(0xc8c5b2);
+box(scene, 0, 0.03, 5, 100, 0.12, 1.2, sidewalk);
+box(scene, 0, 0.03, -5, 100, 0.12, 1.2, sidewalk);
+box(scene, 5, 0.03, 0, 1.2, 0.12, 100, sidewalk);
+box(scene, -5, 0.03, 0, 1.2, 0.12, 100, sidewalk);
+
+// Houses
+const houseColors = [0xf3c783, 0xe98975, 0xf0eee0, 0x9cc7db, 0xe6b8ce];
+const roofColors = [0x914d39, 0x65443c, 0x525e6d, 0x8b5141];
+
+function makeHouse(x, z, index) {
+  const group = new THREE.Group();
+  group.position.set(x, 0, z);
+  scene.add(group);
+
+  const w = 3.6 + (index % 2) * 0.7;
+  const h = 2.8 + (index % 3) * 0.35;
+  const d = 3.5;
+
+  box(group, 0, h/2, 0, w, h, d, mat(houseColors[index % houseColors.length]));
+
+  // Pitched roof made from two sloping slabs
+  const roofMat = mat(roofColors[index % roofColors.length]);
+  const roofA = box(group, -w/4, h+0.45, 0, w*0.72, 0.18, d+0.5, roofMat);
+  const roofB = box(group, w/4, h+0.45, 0, w*0.72, 0.18, d+0.5, roofMat);
+  roofA.rotation.z = -0.52;
+  roofB.rotation.z = 0.52;
+
+  // Front door and windows face the road
+  box(group, 0.55, 0.85, d/2+0.025, 0.7, 1.7, 0.1, mat(0x694532));
+  const glass = mat(0x83d8ee);
+  for (const wx of [-0.95, 1.25]) {
+    box(group, wx, 1.9, d/2+0.035, 0.75, 0.8, 0.08, glass);
+    box(group, wx, 1.9, d/2+0.09, 0.06, 0.85, 0.03, mat(0xffffff));
+  }
+
+  // Chimney
+  box(group, -0.9, h+1.05, -0.5, 0.5, 1.2, 0.5, mat(0xa05b48));
+}
+const housePositions = [
+  [-12,-10],[-20,-10],[-29,-10],[-12,10],[-21,11],[-30,10],
+  [11,-11],[20,-11],[29,-11],[11,11],[20,11],[30,11],
+  [-11,-19],[-20,-20],[12,20],[22,20]
+];
+housePositions.forEach((p,i) => makeHouse(p[0],p[1],i));
+
+// Trees
+function makeTree(x, z, scale=1) {
+  const group = new THREE.Group();
+  group.position.set(x, 0, z);
+  group.scale.setScalar(scale);
+  scene.add(group);
+  cylinder(group, 0, 0.85, 0, 0.22, 1.7, barkMat);
+  const green = leafColors[Math.floor(Math.random()*leafColors.length)];
+  cylinder(group, 0, 2.0, 0, 1.0, 1.8, mat(green), 7);
+  const crown = new THREE.Mesh(
+    new THREE.SphereGeometry(0.85, 7, 5), mat(green)
+  );
+  crown.position.set(0, 2.8, 0);
+  group.add(crown);
+}
+
+for (let x=-42; x<=42; x+=7) {
+  if (Math.abs(x)>7) {
+    makeTree(x, 6.7, 0.8 + Math.random()*0.25);
+    makeTree(x, -6.7, 0.8 + Math.random()*0.25);
+  }
+}
+for (let z=-40; z<=40; z+=8) {
+  if (Math.abs(z)>7) {
+    makeTree(6.7, z, 0.9);
+    makeTree(-6.7, z, 0.9);
+  }
+}
+
+// Park
+box(scene, -18, 0.015, 23, 15, 0.06, 10, mat(0x8dcc72));
+const benchMat = mat(0x875538);
+for (let x=-23; x<=-13; x+=5) {
+  box(scene, x, 0.55, 23, 1.5, 0.12, 0.5, benchMat);
+  box(scene, x, 0.3, 23, 0.12, 0.5, 0.12, benchMat);
+}
+for (let x=-23; x<=-13; x+=5) makeTree(x, 28, 0.8);
+
+// Vehicles
+const vehicles = [];
+
+function makeVehicle(type, color, x, z, direction=1, speed=1) {
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const isBus = type === 'bus';
+  const length = isBus ? 4.5 : 2.5;
+  const height = isBus ? 1.45 : 0.8;
+  const width = isBus ? 1.65 : 1.25;
+  const paint = mat(color);
+
+  box(group, 0, height/2+0.28, 0, length, height, width, paint);
+  box(group, -0.15, height+0.15, 0, length*0.48, 0.55, width*0.88,
+      mat(isBus ? 0x8ad9e9 : 0x9bdff1));
+
+  // Windshield
+  box(group, length*0.38, height+0.12, 0, 0.08, 0.42, width*0.82,
+      mat(0x335b68));
+
+  // Wheels
+  const wheels = [];
+  for (const wx of [-length*0.3, length*0.3]) {
+    for (const wz of [-width*0.48, width*0.48]) {
+      const wheel = cylinder(group, wx, 0.28, wz, 0.28, 0.15,
+        mat(0x20252b), 10);
+      wheel.rotation.x = Math.PI/2;
+      wheels.push(wheel);
+    }
+  }
+
+  group.position.set(x, 0, z);
+  vehicles.push({group, wheels, x, z, direction, speed, length});
+}
+
+makeVehicle('bus', 0xffb72f, -28, -2.0, 1, 4.2);
+makeVehicle('bus', 0x37a9df, 24, 2.0, -1, 3.5);
+makeVehicle('car', 0xe64b42, -12, 1.15, 1, 6.2);
+makeVehicle('car', 0xffffff, 18, -1.15, -1, 5.5);
+makeVehicle('car', 0x424fbd, -40, -1.15, 1, 5.0);
+makeVehicle('car', 0xf4dc48, 42, 1.15, -1, 6.5);
+
+// Pedestrians with animated legs
+const walkers = [];
+
+function makePerson(x, z, shirtColor, direction=1) {
+  const group = new THREE.Group();
+  scene.add(group);
+  const skin = mat(0xf0bd91);
+  const shirt = mat(shirtColor);
+  const pants = mat(0x394d6b);
+
+  cylinder(group, 0, 1.35, 0, 0.22, 0.5, shirt);
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(0.19, 8, 6), skin
+  );
+  head.position.y = 1.73;
+  group.add(head);
+
+  const legs = [];
+  for (const side of [-1,1]) {
+    const leg = box(group, side*0.12, 0.68, 0, 0.13, 0.65, 0.16, pants);
+    legs.push(leg);
+    box(group, side*0.12, 0.31, 0.08, 0.17, 0.12, 0.3, mat(0x292c30));
+  }
+
+  // Arms
+  for (const side of [-1,1]) {
+    const arm = box(group, side*0.29, 1.31, 0, 0.12, 0.55, 0.13, shirt);
+    arm.rotation.z = side*0.15;
+  }
+
+  group.position.set(x, 0, z);
+  walkers.push({group, legs, x, z, direction});
+}
+
+makePerson(-14, 5.1, 0xe74c3c, 1);
+makePerson(-10, -5.1, 0x356ed0, -1);
+makePerson(12, 5.1, 0xefa83c, 1);
+makePerson(20, -5.1, 0x8b58b5, -1);
+makePerson(30, 5.1, 0x269c79, 1);
+makePerson(-18, 22, 0xe96ca6, 1);
+
+// Airplane
+const plane = new THREE.Group();
+scene.add(plane);
+
+const white = mat(0xf7f8fa);
+const blue = mat(0x2465ad);
+const glass = mat(0x82d5ef);
+
+box(plane, 0, 0, 0, 4.8, 0.55, 0.55, white);
+box(plane, 0.2, 0.15, 0, 2.3, 0.08, 4.8, white);
+box(plane, -1.9, 0.18, 0, 1.0, 0.08, 2.0, blue);
+box(plane, -2.05, 0.2, 0, 0.6, 0.08, 1.2, white);
+box(plane, -1.95, 0.6, 0, 0.65, 0.08, 1.5, blue);
+box(plane, 2.0, 0.1, 0, 0.65, 0.45, 0.55, blue);
+box(plane, 0.5, 0.05, 0, 0.3, 0.4, 0.4, glass);
+plane.position.set(-28, 14, -12);
+plane.rotation.y = Math.PI/2;
+plane.scale.setScalar(1.15);
+
+// Sun
+const sunBall = new THREE.Mesh(
+  new THREE.SphereGeometry(2, 12, 8), mat(0xffe58a)
+);
+sunBall.position.set(-30, 28, -35);
+scene.add(sunBall);
+
+// Animate everything
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  // Traffic moves along the main road
+  for (const v of vehicles) {
+    v.group.position.x += v.direction * v.speed * dt;
+    if (v.group.position.x > 48) v.group.position.x = -48;
+    if (v.group.position.x < -48) v.group.position.x = 48;
+    v.wheels.forEach(w => w.rotation.z += v.direction * dt * v.speed * 2);
+  }
+
+  // People stroll along the sidewalks
+  walkers.forEach((p, i) => {
+    p.group.position.x += p.direction * dt * 0.65;
+    if (p.group.position.x > 43) p.group.position.x = -43;
+    if (p.group.position.x < -43) p.group.position.x = 43;
+    p.legs[0].rotation.z = Math.sin(t*5+i)*0.38;
+    p.legs[1].rotation.z = -Math.sin(t*5+i)*0.38;
+  });
+
+  // Airplane loops around overhead
+  plane.position.x = Math.sin(t*0.16)*30;
+  plane.position.z = Math.cos(t*0.16)*22;
+  plane.position.y = 15 + Math.sin(t*0.7)*1.0;
+  plane.rotation.y = Math.atan2(
+    Math.cos(t*0.16)*30*0.16,
+    -Math.sin(t*0.16)*22*0.16
+  );
+  plane.rotation.z = Math.sin(t*0.16)*0.06;
+
+  renderer.render(scene, camera);
+}
+
+// Responsive viewport
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+animate();
+</script>
+</body>
+</html>
