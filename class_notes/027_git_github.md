@@ -1,13 +1,12 @@
-# 📚 Version Control and Git Basics
+# 📚 What Is Git? Version Control and Setup
 
 ## 🎯 Learning Objectives
 
 - 🧠 Understand what **version control** is and why every developer uses it
-- 🆚 Know the difference between **Git** and **GitHub**
-- ⚙️ Install and configure Git on your laptop
-- 📦 Create a repository and save snapshots with `add` and `commit`
-- 🔍 Check progress using `status`, `diff`, and `log`
-- 🙈 Use `.gitignore` to keep unwanted files out of Git
+- 🆚 Know the difference between **Git** (the tool) and **GitHub** (a website, coming in the next session)
+- 🗂️ Understand how Git thinks: **working directory, staging area, repository**
+- 💻 Use the **terminal basics** you need for Git (`pwd`, `ls`, `cd`, `mkdir`)
+- ⚙️ Install Git and **configure your name and email**
 
 ---
 
@@ -15,11 +14,15 @@
 
 Have you ever saved files like `project_final.py`, `project_final_v2.py`, `project_final_REAL.py`? 😅 That is a manual (and messy) version control system.
 
-**Git** is a tool that **remembers every version of your project**, tells you **what changed, when, and who changed it**, and lets you **go back** if something breaks.
+**Git** is a tool that **remembers every version of your project**, tells you **what changed and when**, and lets you **go back** if something breaks.
 
-**Why is it important?** Every software company uses Git. Without it, teams overwrite each other's work and nobody can undo mistakes.
+**Why is it important?** Every software company uses Git. It is the first tool you will use in any developer job.
 
 **Where is it used?** Every project in this course (your hotel app, hospital app, FastAPI backend) should live in Git.
+
+> 💡 **Tip**
+>
+> Today is a **hands-on** session. Everything happens **on your own laptop**, with **Git only**. No internet account is needed. Type every command yourself. Don't copy-paste, because typing builds muscle memory! ⌨️
 
 ---
 
@@ -31,12 +34,12 @@ A **Version Control System (VCS)** records changes to files over time.
 
 | Without version control | With Git |
 |---|---|
-| Copy folders with names like `final_v3` | One folder, full history inside |
-| "Who broke the code?" | `git log` shows who changed what |
-| Fear of trying new ideas | Try on a branch, throw it away if it fails |
-| Teammates overwrite each other | Changes are merged safely |
+| Copy folders named `final_v3` | One folder, full history inside |
+| "Who broke the code?" | `git log` shows what changed and when |
+| Fear of trying new ideas | Try it on a **branch**, delete it if it fails |
+| One wrong edit ruins everything | Go back to any saved version |
 
-**Git is a *distributed* VCS:** every developer has a **full copy** of the history on their own computer, so you can work offline.
+Git is **distributed**: the full history lives **on your computer**, so it works without internet.
 
 ---
 
@@ -44,152 +47,122 @@ A **Version Control System (VCS)** records changes to files over time.
 
 | | **Git** | **GitHub** |
 |---|---|---|
-| What is it? | A **tool** installed on your computer | A **website** that hosts Git repositories |
-| Works offline? | ✅ Yes | ❌ Needs internet |
-| Made by | Linus Torvalds (2005) | GitHub (owned by Microsoft) |
-| Job | Track versions | Share code, collaborate, backup |
+| What is it? | A **tool** installed on your laptop | A **website** that stores Git projects online |
+| Needs internet? | ❌ No | ✅ Yes |
+| Today's session | ✅ **Yes** | ❌ Next session |
 
-> 💡 **Tip**
+> ℹ️ **Note**
 >
-> Git is like **MS Word's version history**. GitHub is like **Google Drive** where you upload and share it. Alternatives to GitHub: GitLab and Bitbucket. They all use Git.
+> Today we use **only Git**. Once you are comfortable, the next session moves your project to GitHub.
 
 ---
 
-### ⚙️ 3. Installing and Configuring Git
+### 🗂️ 3. How Git Thinks: Three Areas
 
-1. Download from **git-scm.com** and install (on Windows this also gives you **Git Bash**).
-2. Check it works:
+```
+ Working Directory  ──git add──►  Staging Area  ──git commit──►  Repository
+   (your files)                  (ready to save)                 (saved history)
+```
+
+| Area | Meaning | Analogy |
+|---|---|---|
+| **Working directory** | The files you edit | Your desk |
+| **Staging area** | Changes you picked for the next save | Putting items in a box |
+| **Repository** | Permanent snapshots called **commits** | Sealed, labeled boxes in a warehouse |
+
+A **commit** is a snapshot of your project with a message ("what I changed"), your name, and a time.
+
+🤔 **Quick thinking question:** Why does Git have a staging area? Why not save everything automatically?
+
+✅ **Answer:** So you can choose **exactly what goes into each snapshot**. For example, fix a bug in one file and add a feature in another, and save them as two separate, clearly labeled commits.
+
+---
+
+### 💻 4. Terminal Survival Kit
+
+Git is used from the **terminal**. On Windows we use **Git Bash**, a terminal that is installed together with Git.
+
+**How to open it:** press the **Windows key**, type `Git Bash`, press Enter. Or open any folder in File Explorer, right-click an empty space, and choose **Open Git Bash here** (Windows 11: click *Show more options* first).
+
+> ⚠️ **Important**
+>
+> Use **Git Bash** for the whole course, not CMD or PowerShell. Commands like `ls -a`, `cat`, and `echo >>` behave differently there, and the outputs in these notes won't match.
+
+| Command | Meaning |
+|---|---|
+| `pwd` | Where am I? (print working directory) |
+| `ls` | List files in this folder |
+| `cd folder` | Go **into** a folder |
+| `cd ..` | Go **up** one folder |
+| `mkdir name` | Make a new folder |
+| `clear` | Clean the screen |
+
+Try it:
+
+```bash
+pwd
+cd ~
+mkdir git-class
+cd git-class
+pwd
+```
+
+`~` means your user folder (`C:\Users\YourName`). Git Bash shows it as `/c/Users/YourName`. We use it instead of **Documents**, because OneDrive often moves the Documents folder and confuses paths.
+
+> 💡 **Tip**
+>
+> Press the **Tab** key to auto-complete folder names, and the **Up arrow** to repeat the previous command. In Git Bash, paste with **right-click** or **Shift + Insert** (Ctrl + V may not work).
+
+---
+
+### ⚙️ 5. Installing and Configuring Git (Lab 0)
+
+**Step 1. Install Git for Windows.** Download it from **git-scm.com** and run the installer. Click **Next** on most screens, but change these two:
+
+| Installer screen | Choose |
+|---|---|
+| *Choosing the default editor used by Git* | **Visual Studio Code** (if installed). This avoids the confusing Vim editor. |
+| *Adjusting the name of the initial branch* | **Override the default branch name** and type `main` |
+
+Everything else can stay at the default.
+
+**Step 2. Check it works:**
 
 ```bash
 git --version
 ```
 
-3. Tell Git **who you are** (once per computer). This name and email go into every commit:
+Expected: something like `git version 2.43.0` (your number may differ).
+
+**Step 3. Tell Git who you are** (once per laptop). Every commit you make will carry this name:
 
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 git config --global init.defaultBranch main
+```
+
+**Step 4. Check it:**
+
+```bash
 git config --list
 ```
 
+You should see your `user.name` and `user.email` in the list.
+
+**Step 5. Check Python** (we run Python code in the labs):
+
+```bash
+python --version
+```
+
+Expected: `Python 3.x.x`. If Windows opens the **Microsoft Store**, or says *"python is not recognized"*, install Python from **python.org** and tick **"Add python.exe to PATH"** on the first screen. Then close and reopen Git Bash.
+
+✅ **Checkpoint:** `git --version` and `python --version` both work, and `git config --list` shows your name and email. Raise your hand if not. Don't move on yet!
+
 > ℹ️ **Note**
 >
-> Use the same email you use on GitHub, so your commits are linked to your profile.
-
----
-
-### 📦 4. Creating a Repository
-
-A **repository (repo)** is a project folder that Git is tracking. The history lives in a hidden folder called `.git`.
-
-```bash
-mkdir hospital-project
-cd hospital-project
-git init
-```
-
-Output: `Initialized empty Git repository ...`
-
-> ⚠️ **Important**
->
-> Never delete the `.git` folder. It **is** your history. Also never run `git init` inside another repo.
-
----
-
-### 🗂️ 5. The Three Areas (Most Important Idea!)
-
-```
- Working Directory  ──git add──►  Staging Area  ──git commit──►  Repository
-  (your files)                  (ready to save)                 (saved history)
-```
-
-| Area | Meaning | Analogy |
-|---|---|---|
-| **Working directory** | Files you edit | Your desk |
-| **Staging area** | Changes you chose to include in the next save | Items placed in a box |
-| **Repository** | Permanent snapshots (commits) | Sealed and labeled boxes in a warehouse |
-
----
-
-### 📸 6. Your First Commit
-
-```bash
-echo 'print("Hello Hospital")' > app.py
-git status                       # app.py is "untracked"
-git add app.py                   # move it to the staging area
-git commit -m "Add first version of app.py"
-```
-
-- `git add .` stages **all** changes in the folder.
-- A **commit** is a snapshot with a message, author, date, and a unique id (hash).
-
-**Writing good commit messages:**
-
-| ❌ Bad | ✅ Good |
-|---|---|
-| `update` | `Add patient search to patients page` |
-| `fixed stuff` | `Fix crash when age is empty` |
-| `asdf` | `Add .gitignore for Python` |
-
-Rule of thumb: start with a verb, keep it under about 50 characters, describe **what** and **why**.
-
-🤔 **Quick thinking question:** You edited three files but want to commit only two of them. How?
-
-✅ **Answer:** Stage only those two: `git add file1.py file2.py`, then `git commit`. The third stays modified but uncommitted. This is why the staging area exists.
-
----
-
-### 🔍 7. Looking Around: `status`, `diff`, `log`
-
-```bash
-git status            # what changed? what's staged?
-git diff              # changes NOT yet staged
-git diff --staged     # changes staged for the next commit
-git log               # full history
-git log --oneline     # one line per commit (great for quick view)
-git log --oneline --graph --all
-```
-
----
-
-### 🙈 8. `.gitignore`: Files Git Should Skip
-
-Some files must **never** be committed: virtual environments, secrets, caches, database files.
-
-Create a file named `.gitignore`:
-
-```gitignore
-# Python
-__pycache__/
-*.pyc
-venv/
-.venv/
-
-# Secrets and local settings
-.env
-
-# Databases and logs
-*.db
-*.log
-
-# Node / React
-node_modules/
-dist/
-
-# Editors / OS
-.vscode/
-.DS_Store
-```
-
-```bash
-git add .gitignore
-git commit -m "Add .gitignore"
-```
-
-> ⚠️ **Important**
->
-> `.gitignore` only affects files **not yet tracked**. If you already committed a secret like `.env`, adding it to `.gitignore` later does **not** remove it from history. Never commit passwords or API keys.
+> If you skip Step 3, Git will refuse your first commit with the message *"Please tell me who you are."* Just run the two `git config` commands and try again.
 
 ---
 
@@ -197,7 +170,7 @@ git commit -m "Add .gitignore"
 
 🎮 **Saving points in a video game.**
 
-Each **commit** is a **save point**. You can keep playing, and if you die (break your code), you **load an earlier save**. The **staging area** is deciding *which* progress goes into the next save. **GitHub** is the cloud where you back up all your save files.
+Each **commit** is a **save point**. You keep playing (coding), and if you make a big mistake you **load an earlier save**. The **staging area** is choosing what progress goes into the next save.
 
 ---
 
@@ -205,11 +178,11 @@ Each **commit** is a **save point**. You can keep playing, and if you die (break
 
 | Where | Git usage |
 |---|---|
-| 🐧 Linux kernel | Git was created for it; thousands of contributors |
-| 🏢 Google, Microsoft, Amazon | Teams store code in Git repositories |
-| 🏥 Hospital software teams | Track every change for audits and bug tracing |
+| 🐧 Linux kernel | Git was created for it (by Linus Torvalds, 2005) |
+| 🏢 Google, Microsoft, Amazon | Teams track code in Git |
+| 🏥 Hospital software teams | Every change is traceable for audits |
 | 🎓 Students | Portfolio projects shown to recruiters |
-| 📄 Docs and config | Even documents and server configs are versioned |
+| ⚙️ DevOps | Server configs and deployments are versioned |
 
 ---
 
@@ -217,30 +190,28 @@ Each **commit** is a **save point**. You can keep playing, and if you die (break
 
 📘 **Scenario: A bug appears after Friday's release**
 
-1. 🐞 The billing page shows wrong totals on Monday.
-2. 🔍 A developer runs `git log --oneline` and sees a commit "Change tax calculation" from Friday.
-3. 🔬 She runs `git diff` between the commits and spots a `*` that should have been `+`.
+1. 🐞 On Monday, the billing page shows wrong totals.
+2. 🔍 A developer runs `git log` and sees a commit from Friday: "Change tax calculation".
+3. 🔬 She looks at exactly what that commit changed and finds a `*` that should have been `+`.
 4. 🩹 She fixes it and commits: "Fix tax calculation operator".
-5. 📜 The history now shows **what broke, who changed it, when, and how it was fixed**. Without Git, this would take hours of guessing.
+5. 📜 The history now shows **what broke, who changed it, when, and how it was fixed**. Without Git, this could take hours of guessing.
 
 ---
 
 ## 📊 Diagram
 
 ```
-        YOUR COMPUTER
- ┌────────────────────────────────────────────────┐
- │  Working Directory      Staging Area    .git   │
- │  ┌──────────────┐      ┌──────────┐   ┌──────┐│
- │  │ app.py (edit)│─add─►│ app.py   │─►│commit││
- │  │ style.css    │      │          │   │ #1   ││
- │  └──────────────┘      └──────────┘   │ #2   ││
- │         ▲                              │ #3   ││
- │         └────────── checkout ──────────┴──────┘│
- └────────────────────────────────────────────────┘
-
- Commit history (oldest → newest):
-   #1 ── #2 ── #3   ← HEAD (where you are now)
+         YOUR LAPTOP (everything today happens here)
+ ┌─────────────────────────────────────────────────────┐
+ │  Working Directory     Staging Area     Repository   │
+ │  (edit files)          (git add)        (git commit) │
+ │  ┌────────────┐       ┌───────────┐    ┌──────────┐ │
+ │  │ app.py     │──────►│ app.py    │───►│ commit 1 │ │
+ │  │ patients.py│       │           │    │ commit 2 │ │
+ │  └────────────┘       └───────────┘    │ commit 3 │ │
+ │                                        └──────────┘ │
+ └─────────────────────────────────────────────────────┘
+            (GitHub, the online copy, comes later)
 ```
 
 ---
@@ -249,99 +220,623 @@ Each **commit** is a **save point**. You can keep playing, and if you die (break
 
 | ❌ Wrong Belief | ✅ Correct Understanding |
 |---|---|
-| "Git and GitHub are the same." | Git is the tool. GitHub is a website that hosts Git repos. |
-| "`git add` saves my work." | It only **stages**. Saving happens with `git commit`. |
-| "I can commit without `git config` name and email." | Git will ask or use wrong details. Configure first. |
-| "Commit message: `update`." | Write clear messages for your future self. |
-| "Adding `.env` to `.gitignore` removes it from history." | It does not. Never commit secrets. |
-| "Commit everything with `git add .` blindly." | Check `git status` first so you don't commit junk. |
-| "Running `git init` in my Documents folder." | Only run it inside the project folder. |
+| "Git and GitHub are the same." | Git is the tool on your laptop. GitHub is a website that hosts Git projects. |
+| "I need internet to use Git." | Git works fully offline. |
+| "I can skip `git config`." | Without your name and email, commits fail. |
+| "Git saves my files automatically." | Git only saves when **you** commit. |
+| "I must memorize all commands today." | Learn the basic 8. Look up the rest. |
+| "Typing commands in the wrong folder is fine." | Always check with `pwd` where you are. |
+| "CMD, PowerShell, and Git Bash are the same." | Use **Git Bash** so commands match these notes. |
 
 ---
 
 ## 💬 Interview Corner
 
 **Q1. What is Git?**
-A distributed version control system that tracks changes in files and lets multiple people collaborate.
+A distributed version control system that tracks changes in files and lets you return to earlier versions.
 
 **Q2. What is the difference between Git and GitHub?**
-Git is the local tool for version control. GitHub is an online service that hosts Git repositories for sharing and collaboration.
+Git is the tool installed on your computer. GitHub is an online service that hosts Git repositories.
 
-**Q3. What is the staging area?**
-A holding area where you choose which changes will go into the next commit.
+**Q3. What are the three areas in Git?**
+Working directory (your files), staging area (changes chosen for the next commit), and repository (saved commits).
 
-**Q4. What does `git init` do?**
-It creates a hidden `.git` folder and turns the current folder into a Git repository.
+**Q4. What is a commit?**
+A saved snapshot of the project with a message, author, and timestamp.
 
 ---
 
 ## 📝 Quick Summary
 
-- 🧠 Git records **every version** of your project.
-- 🆚 Git = tool, GitHub = hosting website.
+- 🧠 Git remembers **every version** of your project.
+- 🆚 Git = tool on your laptop, GitHub = website (later).
+- 🗂️ Working directory → staging area → repository.
+- 📸 A **commit** is a snapshot with a message.
+- 💻 Basic terminal commands: `pwd`, `ls`, `cd`, `mkdir`.
 - ⚙️ Set `user.name` and `user.email` once.
-- 📦 `git init` starts a repository.
-- 🗂️ Files travel: working directory → staging area → repository.
-- 📸 `git add` then `git commit -m "message"`.
-- 🔍 `status`, `diff`, and `log` show what is going on.
-- 🙈 `.gitignore` hides secrets, caches, and `venv`.
+- 🌐 Git works **offline**.
 
 ---
 
 ## 🎯 Class Activity
 
-**🛠️ Activity: "Your first repository"**
+**🛠️ Activity: "Get ready" (about 10 minutes)**
 
-1. Install Git and run `git --version`.
-2. Set your name and email with `git config --global`.
-3. Create a folder `git-practice` and run `git init`.
-4. Create `hello.py` with `print("Hello Git")`. Run `git status`.
-5. Stage and commit it with a good message.
-6. Edit the file, run `git diff`, then commit again.
-7. Run `git log --oneline` and show your two commits to a classmate.
-8. Create a `.gitignore` that ignores `venv/` and `.env`, then commit it.
+1. Open the terminal (Git Bash on Windows).
+2. Run `pwd`, `ls`, `cd`, and `mkdir git-class` to get comfortable.
+3. Install Git (if not installed) and run `git --version`.
+4. Configure your name, email, and default branch.
+5. Run `git config --list` and find your details.
+6. Show your screen to a neighbour, and help them if they are stuck.
 
 ---
 
-# 📋 Assignments — Version Control and Git Basics
+# 📋 Assignments — What Is Git? Version Control and Setup
 
 | Assignment |
 |---|
-| Install Git, run `git --version`, and take a screenshot of your configured name and email using `git config --list`. |
-| Create a repository for a small Python script and make at least 5 commits, each with a meaningful message. |
-| Edit two files, stage only one, run `git status`, and explain what you see. |
-| Use `git diff` and `git diff --staged` on the same change and explain the difference in 3 lines. |
-| Run `git log --oneline --graph` and paste the output with your explanation of each line. |
-| Create a `.gitignore` for a Python project, create a fake `.env` and a `venv/` folder, and prove they are ignored using `git status`. |
-| Find the hidden `.git` folder on your computer, list its contents, and explain what `objects` and `HEAD` are (research briefly). |
-| Write 5 bad commit messages and rewrite each one as a good commit message. |
-| Create an empty folder, run `git status` before `git init`, and write what error appears and why. |
-| Make a repository for your earlier hotel or hospital project and commit its current state. |
+| Take a screenshot of `git --version` and `git config --list` showing your name and email. |
+| In the terminal, create the folder structure `git-class/practice/notes` using only `mkdir` and `cd`, and show the result with `pwd`. |
+| Use `ls -a` inside any Git project later and find the hidden `.git` folder. Write one line about what you think it stores. |
+| Write 5 real-life things (not software) that have "version history" or "save points". |
+| Explain in your own words, in 4 lines, why the staging area exists. |
+| Write the difference between Git and GitHub in a table with at least 3 rows. |
+| Find where your laptop stores the global Git config (hint: `git config --global --list --show-origin`) and note the path. |
+| List 3 problems you faced in the past that Git would have solved (like overwritten files or lost versions). |
 
 ---
 ---
 
-# 📚 Branching and Merging
+# 📚 Hands-On: Your First Local Repository
 
 ## 🎯 Learning Objectives
 
-- 🌿 Explain what a **branch** is and why teams use branches
-- 🔀 Create, switch, list, and delete branches
-- 🤝 Merge a branch into `main`
-- 💥 Resolve a **merge conflict** step by step
-- 🧭 Understand `HEAD` and the commit graph
+- 📦 Create a repository with `git init`
+- 🔍 Read `git status` and understand its messages
+- ➕ Stage files with `git add` and save them with `git commit`
+- 📜 View history with `git log`
+- 🔬 See your changes with `git diff`
+- 🙈 Ignore unwanted files using `.gitignore`
 
 ---
 
 ## 📖 Introduction
 
-Imagine you are adding a **login feature** while your friend fixes a **bug**. If you both edit the same folder, you will break each other's work.
+Time to build! In this lab you create a tiny **hospital app in Python** and save it in Git step by step, exactly like a real developer.
 
-A **branch** is a separate line of development. You work on your own branch, and when the feature is ready, you **merge** it back into the main line.
+You will repeat one rhythm again and again, and it will become automatic:
 
-**Why is it important?** Branches keep `main` always working, and let many people work at the same time.
+```
+ edit  ──►  status  ──►  add  ──►  commit
+```
 
-**Where is it used?** Every professional team uses a branch for each feature, bug fix, or experiment.
+**Why is it important?** These four moves are about 90% of daily Git use.
+
+> 💡 **Tip**
+>
+> Use **VS Code** to create and edit files (`code .` opens the current folder), and type Git commands in **Git Bash**. We run Python with `python` (Mac/Linux users type `python3`).
+
+> 🔎 **Note**
+>
+> Your **commit codes** (like `0e62652`) will be different from the ones in these notes. That is normal.
+
+---
+
+## 🧠 Detailed Notes
+
+### 🪜 Step 1. Create the Project Folder and Start Git
+
+```bash
+cd ~/git-class                 # the folder from the setup topic
+mkdir hospital-app
+cd hospital-app
+git init
+```
+
+Expected:
+
+```
+Initialized empty Git repository in .../hospital-app/.git/
+```
+
+Git created a hidden `.git` folder. **That folder is the entire history.**
+
+> ⚠️ **Important**
+>
+> Never delete `.git`, and never run `git init` inside another Git project.
+
+---
+
+### 🪜 Step 2. Check the Status
+
+```bash
+git status
+```
+
+```
+On branch main
+
+No commits yet
+
+nothing to commit (create/copy files and use "git add" to track)
+```
+
+📖 *"On branch main"* means you are on the main line. *"No commits yet"* means the history is empty.
+
+**`git status` is your best friend.** Run it **all the time**.
+
+---
+
+### 🪜 Step 3. Create Your First File
+
+In VS Code, create **`app.py`**:
+
+```python
+print("Welcome to City Hospital")
+```
+
+Run it:
+
+```bash
+python app.py
+```
+
+```
+Welcome to City Hospital
+```
+
+Now ask Git:
+
+```bash
+git status
+```
+
+```
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	app.py
+
+nothing added to commit but untracked files present (use "git add" to track)
+```
+
+📖 **Untracked** means: *"Git sees this file but isn't watching it yet."*
+
+---
+
+### 🪜 Step 4. Stage the File (`git add`)
+
+```bash
+git add app.py
+git status
+```
+
+```
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+	new file:   app.py
+```
+
+📖 The file is now in the **staging area**, ready to be saved.
+
+---
+
+### 🪜 Step 5. Make Your First Commit
+
+```bash
+git commit -m "Add welcome message"
+```
+
+```
+[main (root-commit) 0e62652] Add welcome message
+ 1 file changed, 1 insertion(+)
+ create mode 100644 app.py
+```
+
+🎉 **Congratulations, you made your first save point!**
+
+- `-m` lets you type the **message** right there.
+- `root-commit` just means "the very first commit".
+
+> ⚠️ **Important**
+>
+> If you forget `-m`, an editor opens so you can type the message. Don't panic!
+> - **VS Code opened:** type your message on the first line, save (**Ctrl + S**), and close the tab. (To cancel, close the tab with an empty message.)
+> - **Vim opened (a black screen with `~` lines):** press **Esc**, type `:q!` and press **Enter** to escape. Then run the commit again with `-m`.
+
+**Writing good commit messages:**
+
+| ❌ Bad | ✅ Good |
+|---|---|
+| `update` | `Add patient list to app` |
+| `fixed stuff` | `Fix crash when name is empty` |
+| `asdf` | `Add .gitignore` |
+
+Start with a verb and say **what** you changed.
+
+---
+
+### 🪜 Step 6. See the History
+
+```bash
+git log --oneline
+```
+
+```
+0e62652 Add welcome message
+```
+
+Also try the long version:
+
+```bash
+git log
+```
+
+```
+commit 0e62652...  (long code)
+Author: Your Name <you@example.com>
+Date:   ...
+
+    Add welcome message
+```
+
+✅ **Checkpoint 1:** You have **1 commit** in `git log`, and `git status` says **"nothing to commit, working tree clean"**.
+
+---
+
+### 🪜 Step 7. Make Your Second Change
+
+Create a new file **`patients.py`**:
+
+```python
+patients = ["Asha", "Ravi"]
+```
+
+Change **`app.py`** to:
+
+```python
+from patients import patients
+
+print("Welcome to City Hospital")
+for name in patients:
+    print("Patient:", name)
+```
+
+Run it:
+
+```bash
+python app.py
+```
+
+```
+Welcome to City Hospital
+Patient: Asha
+Patient: Ravi
+```
+
+Now check Git:
+
+```bash
+git status
+```
+
+```
+Changes not staged for commit:
+	modified:   app.py
+
+Untracked files:
+	__pycache__/
+	patients.py
+```
+
+📖 Two kinds of changes: **`app.py` is modified** (Git knows it), and **`patients.py` is untracked** (new). And look: Python created a **`__pycache__/`** folder by itself.
+
+🤔 **Quick thinking question:** Should `__pycache__/` be saved in Git?
+
+✅ **Answer:** **No.** It is auto-generated junk that can be re-created anytime. We tell Git to ignore it. Let's do that next.
+
+---
+
+### 🪜 Step 8. Create `.gitignore`
+
+Create a file named **`.gitignore`** (with the dot at the start):
+
+```
+__pycache__/
+venv/
+.env
+```
+
+> ⚠️ **Important (Windows)**
+>
+> Create this file **in VS Code** (*New File*, then type `.gitignore`). If you use Notepad, Windows may save it as `.gitignore.txt`, and Git will ignore **nothing**. Check with `ls -a` in Git Bash: you must see `.gitignore`, not `.gitignore.txt`.
+
+```bash
+git status
+```
+
+```
+Untracked files:
+	.gitignore
+	patients.py
+```
+
+🎉 `__pycache__/` has **disappeared** from the list. Git now ignores it.
+
+> ⚠️ **Important**
+>
+> Always add `.gitignore` **before** your first `git add .`. If you commit a file once (like `.env` with passwords), adding it to `.gitignore` later **won't remove it from history**.
+
+---
+
+### 🪜 Step 9. See What Changed (`git diff`)
+
+```bash
+git diff
+```
+
+```
+--- a/app.py
++++ b/app.py
+@@ -1 +1,5 @@
++from patients import patients
++
+ print("Welcome to City Hospital")
++for name in patients:
++    print("Patient:", name)
+```
+
+📖 Lines starting with **`+`** were **added**. Lines starting with **`-`** were **removed**. `git diff` shows changes **before** you stage them. (It only compares files Git already tracks.)
+
+---
+
+### 🪜 Step 10. Stage Everything and Commit
+
+```bash
+git add .
+git status
+```
+
+```
+Changes to be committed:
+	new file:   .gitignore
+	modified:   app.py
+	new file:   patients.py
+```
+
+The `.` means "everything in this folder". Always **read the list** before committing!
+
+```bash
+git commit -m "Show patient list and add .gitignore"
+```
+
+```
+[main cf39de2] Show patient list and add .gitignore
+ 3 files changed, 8 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 patients.py
+```
+
+---
+
+### 🪜 Step 11. Look at Your History
+
+```bash
+git log --oneline
+```
+
+```
+cf39de2 Show patient list and add .gitignore
+35ab63e Add welcome message
+```
+
+To see what a commit changed:
+
+```bash
+git show --stat
+```
+
+```
+commit cf39de2...
+Author: Your Name <you@example.com>
+
+    Show patient list and add .gitignore
+
+ .gitignore  | 3 +++
+ app.py      | 4 ++++
+ patients.py | 1 +
+ 3 files changed, 8 insertions(+)
+```
+
+✅ **Checkpoint 2:** You have **2 commits**, a clean status, and **no** `__pycache__` in Git.
+
+---
+
+### 🔁 The Rhythm to Remember
+
+```
+ 1. edit files
+ 2. git status        ← what changed?
+ 3. git diff          ← what exactly?
+ 4. git add .         ← pick it
+ 5. git commit -m ""  ← save it
+ 6. git log --oneline ← confirm
+```
+
+> 💡 **Tip**
+>
+> A shortcut: `git commit -am "message"` stages **and** commits all **already-tracked** files in one go. It does **not** include brand-new (untracked) files.
+
+---
+
+### 🧯 Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `fatal: not a git repository` | You are in the wrong folder. Use `pwd` and `cd` into `hospital-app`. |
+| `Please tell me who you are` | Run the two `git config --global` commands from the setup. |
+| An editor opened after `git commit` | VS Code: write a message, save, close the tab. Vim: press Esc, type `:q!`, Enter. Next time use `-m`. |
+| `python` is not recognized, or the Microsoft Store opens | Install Python from python.org with **"Add python.exe to PATH"**, then reopen Git Bash. |
+| `.gitignore` has no effect | Check `ls -a`. The file may be named `.gitignore.txt`. Rename it. |
+| `nothing to commit` | You didn't change or stage anything. Edit a file and try again. |
+| `warning: ... LF will be replaced by CRLF` | Harmless Windows line-ending message. Ignore it. |
+| Typed a wrong commit message | Tell the instructor. We'll fix it in the last topic. |
+
+---
+
+## 💡 Real-Life Analogy
+
+📦 **Packing a box to send.**
+
+You collect items on your table (**working directory**), choose which ones go in the box (**`git add`**), seal it and write a label (**`git commit -m`**). `git log` is the **shipping register** of all boxes sent. `.gitignore` is the list of things you **never** pack, like garbage and your personal diary.
+
+---
+
+## 💻 Real-World Application
+
+| Where | Same workflow |
+|---|---|
+| 💼 Every developer, every day | edit → status → add → commit |
+| 🏥 Hospital software | Each change has a message for audits |
+| 🧪 Data science | Version notebooks and scripts |
+| 📚 Writers and designers | Even documents can live in Git |
+| ⚙️ Config management | Server settings tracked like code |
+
+---
+
+## 🔍 Industry Example
+
+📘 **Scenario: A developer's morning**
+
+1. ☕ She opens the project and runs `git status` to see where she left off.
+2. ✍️ She edits the patient search function and tests it.
+3. 🔬 `git diff` shows exactly 12 changed lines, so she reviews her own work.
+4. ➕ `git add patients.py`, because she wants to leave out a half-finished experiment in another file.
+5. 📸 `git commit -m "Add search by department"`.
+6. 🔁 She repeats this 5 to 10 times a day. Each commit is a **safe point** she can return to.
+
+---
+
+## 📊 Diagram
+
+```
+   git init                                git commit
+      │                                        │
+      ▼                                        ▼
+  ┌────────┐   edit    ┌───────────┐  add  ┌────────┐ commit ┌────────────┐
+  │ empty  │ ────────► │ modified  │ ────► │ staged │ ─────► │ committed  │
+  │  repo  │           │ untracked │       │        │        │ (history)  │
+  └────────┘           └───────────┘       └────────┘        └────────────┘
+                              ▲                                     │
+                              └─────────── edit again ◄─────────────┘
+
+  git status  tells you which box each file is in
+```
+
+---
+
+## ⚠️ Common Mistakes
+
+| ❌ Wrong Belief | ✅ Correct Understanding |
+|---|---|
+| "`git add` saves my work." | It only **stages**. `git commit` saves. |
+| "Commit message: `update`." | Write what changed so future-you understands. |
+| "`git add .` without looking." | Run `git status` first. Don't commit junk. |
+| "`.gitignore` can come later." | Create it **before** the first `git add .`. |
+| "`git diff` shows my new files." | It only shows changes in **tracked** files. |
+| "`git commit -am` adds new files." | It only includes files Git already tracks. |
+| "I ran `git init` twice, no problem." | Don't `git init` inside another repo. |
+
+---
+
+## 💬 Interview Corner
+
+**Q1. What does `git init` do?**
+It creates a hidden `.git` folder and turns the current folder into a Git repository.
+
+**Q2. What is the difference between `git add` and `git commit`?**
+`git add` places changes in the staging area. `git commit` saves the staged changes permanently as a snapshot in history.
+
+**Q3. What does `git status` show?**
+The current branch and which files are untracked, modified, or staged.
+
+**Q4. What is `.gitignore`?**
+A file listing files and folders that Git should not track, like `venv/`, `__pycache__/`, and `.env`.
+
+---
+
+## 📝 Quick Summary
+
+- 📦 `git init` starts a repository.
+- 🔍 `git status` shows what is going on. Use it constantly.
+- ➕ `git add` stages, 📸 `git commit -m` saves.
+- 📜 `git log --oneline` shows history.
+- 🔬 `git diff` shows exact changes (`+` added, `-` removed).
+- 🙈 `.gitignore` hides junk like `__pycache__/`, `venv/`, `.env`.
+- 🔁 Rhythm: edit → status → add → commit.
+- ✍️ Write clear commit messages.
+
+---
+
+## 🎯 Class Activity
+
+**🛠️ Activity: "Build the hospital app history" (about 20 minutes)**
+
+Follow Steps 1 to 11 on your own laptop. Raise your hand at each ✅ Checkpoint. Then, **on your own**:
+
+1. Add a third patient `"Meena"` to `patients.py`.
+2. Run `git status` and `git diff` and read them.
+3. Stage and commit it with a clear message.
+4. Create `doctors.py` with a list of two doctor names, and print them from `app.py`.
+5. Commit that as a separate commit.
+6. Show `git log --oneline`. You should have **4 commits**.
+
+---
+
+# 📋 Assignments — Hands-On: Your First Local Repository
+
+| Assignment |
+|---|
+| Create a new repository called `hotel-app` with a Python file that prints a welcome message, and make 5 commits with clear messages. Submit a screenshot of `git log --oneline`. |
+| Create a `.gitignore` before your first commit that ignores `__pycache__/`, `venv/`, and `.env`. Create a fake `.env` file and prove with `git status` that it is ignored. |
+| Edit a file, run `git diff`, and explain each `+` and `-` line in your own words. |
+| Edit two files but stage and commit only one of them. Show `git status` before and after. |
+| Run `git show --stat` on three of your commits and write what each one changed. |
+| Make a commit **without** `-m` on purpose, get out of the editor that opens (Vim: `Esc`, `:q!`, Enter. VS Code: close the tab), and write the steps you followed. |
+| Create an empty folder, run `git status` there, and write the error message and why it appears. Then run `git init` and check again. |
+| Use `ls -a` to find `.git`. Look inside it (`ls .git`) and list 3 names you see. Do **not** change anything. |
+| Write 6 bad commit messages and rewrite each as a good one. |
+| Put your earlier React or JavaScript project in Git by running `git init` in its folder, adding a proper `.gitignore` (including `node_modules/`), and making the first commit. |
+
+---
+---
+
+# 📚 Hands-On: Branching and Merging
+
+## 🎯 Learning Objectives
+
+- 🌿 Explain what a **branch** is and why we use it
+- 🔀 Create, switch between, and list branches
+- 🤝 **Merge** a branch back into `main`
+- 💥 Recognize and **resolve a merge conflict**
+- 🧭 Read the commit graph with `git log --graph`
+
+---
+
+## 📖 Introduction
+
+Imagine you want to try a new feature, but you're afraid of breaking the working app. 😰
+
+A **branch** is a **safe, separate copy of your timeline**. You experiment on the branch. If it works, you **merge** it into `main`. If it doesn't, you simply delete the branch and `main` was never touched.
+
+**Why is it important?** Every professional team works on branches. **Nobody** builds features directly on `main`.
+
+> 🔎 **Note**
+>
+> You will continue in the **same `hospital-app`** folder from the last lab. Before starting, run `git status` and make sure it says **"nothing to commit, working tree clean"**.
 
 ---
 
@@ -349,138 +844,268 @@ A **branch** is a separate line of development. You work on your own branch, and
 
 ### 🌿 1. What Is a Branch?
 
-A branch is just a **movable label** pointing to a commit. Creating one is instant and costs almost nothing.
+A branch is just a **movable label** pointing to a commit. Creating one is instant.
 
-- `main` is the default branch (the "official" version).
-- `HEAD` points to the branch you are on right now.
+- `main` is the default branch (the official, working version).
+- You are always **on exactly one branch**. `git status` tells you which.
 
 ```
- main:     A ── B ── C
-                      \
- feature-login:        D ── E
+ main:   A ── B ── C
+                    \
+ feature-add-patient: D
 ```
 
 ---
 
-### 🛠️ 2. Branch Commands
+### 🪜 Lab 1. Create a Branch and Work on It
+
+**Step 1. See your branches:**
 
 ```bash
-git branch                    # list branches (* = current)
-git branch feature-search     # create a branch
-git switch feature-search     # move to it
-git switch -c feature-login   # create AND switch (most used)
-git branch -d feature-search  # delete a merged branch
+git branch
 ```
 
-> ℹ️ **Note**
->
-> Older tutorials use `git checkout`. `git switch` is the newer, clearer command for changing branches.
+```
+* main
+```
 
----
+The `*` marks the branch you are on.
 
-### ✍️ 3. Working on a Branch
+**Step 2. Create and switch to a new branch:**
 
 ```bash
-git switch -c feature-login
-# edit files...
-git add .
-git commit -m "Add login form"
-git switch main               # your login files disappear (they live on the other branch)
-git switch feature-login      # they come back
+git switch -c feature-add-patient
 ```
 
-> 💡 **Tip**
->
-> Commit or stash your work before switching branches, so changes don't get in the way.
+```
+Switched to a new branch 'feature-add-patient'
+```
 
----
+(`-c` means *create*. It is the same as `git branch name` + `git switch name`.)
 
-### 🔀 4. Merging
+**Step 3. Make a change.** Edit **`patients.py`** to:
 
-To bring a branch's work into `main`:
+```python
+patients = ["Asha", "Ravi", "Meena"]
+```
+
+**Step 4. Check, stage, commit:**
+
+```bash
+git status
+git add patients.py
+git commit -m "Add patient Meena"
+```
+
+```
+[feature-add-patient 11d0ece] Add patient Meena
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+**Step 5. Now the magic. Go back to `main`:**
 
 ```bash
 git switch main
-git merge feature-login
+cat patients.py
 ```
 
-Two situations:
-
-| Type | When | Result |
-|---|---|---|
-| **Fast-forward** | `main` has no new commits since you branched | Git simply moves the `main` label forward |
-| **Merge commit** | Both branches have new commits | Git creates a new commit joining both lines |
-
 ```
- Fast-forward:                Merge commit:
- main: A─B                    main:  A─B─C──────M
-            \                            \     /
- feat:       C─D  → main: A─B─C─D   feat:   D─E
+patients = ["Asha", "Ravi"]
 ```
 
-After merging, delete the finished branch:
+✨ **Meena is gone!** Your file went back to the `main` version, because the new commit lives **only on the other branch**. (Open `patients.py` in VS Code, and you'll see the change live as you switch.)
 
 ```bash
-git branch -d feature-login
+git switch feature-add-patient
 ```
 
-🤔 **Quick thinking question:** After `git merge feature-login`, which branch contains the new code, `main` or `feature-login`?
+Meena is **back**. Same folder, different timeline. 🤯
 
-✅ **Answer:** Both. The merge happens **into** the branch you are on (`main`). `feature-login` is unchanged and can be deleted.
+✅ **Checkpoint 3:** You can switch between the two branches and see `patients.py` change.
+
+🤔 **Quick thinking question:** You're on `feature-add-patient` with an **uncommitted** edit and you try `git switch main`. What might happen?
+
+✅ **Answer:** Git may refuse (or carry the change along) to protect your work. The clean habit: **commit before you switch branches**.
 
 ---
 
-### 💥 5. Merge Conflicts
+### 🤝 2. Lab 2. Merge the Branch into `main`
 
-A conflict happens when **two branches changed the same lines** of the same file. Git can't decide, so it asks **you**.
+**Rule:** to bring branch **X** into **main**, first **go to main**, then run `git merge X`.
 
-Git marks the file like this:
+```bash
+git switch main
+git merge feature-add-patient
+```
 
 ```
+Updating cf39de2..11d0ece
+Fast-forward
+ patients.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+📖 **Fast-forward** means `main` had no new commits of its own, so Git simply **moved the `main` label forward**. No new commit was needed.
+
+Check:
+
+```bash
+cat patients.py
+git branch
+```
+
+Meena is now in `main` ✅. Clean up the finished branch:
+
+```bash
+git branch -d feature-add-patient
+```
+
+```
+Deleted branch feature-add-patient (was 11d0ece).
+```
+
+✅ **Checkpoint 4:** `git branch` shows only `main`, and `main` contains Meena.
+
+---
+
+### 💥 3. Lab 3. A Merge Conflict (On Purpose!)
+
+A **conflict** happens when **two branches change the same line**. Git can't decide which one you want, so it asks **you**. It is **normal**, not an error you caused.
+
+**Step 1. Make a branch that changes the hospital name:**
+
+```bash
+git switch -c feature-rename
+```
+
+Edit line 3 of `app.py`: change `City Hospital` to `Sunrise Hospital`.
+
+```bash
+git commit -am "Rename hospital to Sunrise"
+```
+
+**Step 2. Go back to `main` and change the SAME line differently:**
+
+```bash
+git switch main
+```
+
+Edit line 3 of `app.py`: change `City Hospital` to `Green Valley Hospital`.
+
+```bash
+git commit -am "Rename hospital to Green Valley"
+```
+
+**Step 3. Merge, and watch it fail:**
+
+```bash
+git merge feature-rename
+```
+
+```
+Auto-merging app.py
+CONFLICT (content): Merge conflict in app.py
+Automatic merge failed; fix conflicts and then commit the result.
+```
+
+😮 Don't panic. Run `git status`:
+
+```
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+	both modified:   app.py
+```
+
+**Step 4. Open `app.py`.** Git has written both versions into the file:
+
+```
+from patients import patients
+
 <<<<<<< HEAD
-print("Welcome to City Hospital")
+print("Welcome to Green Valley Hospital")
 =======
 print("Welcome to Sunrise Hospital")
 >>>>>>> feature-rename
+for name in patients:
+    print("Patient:", name)
 ```
 
 | Marker | Meaning |
 |---|---|
-| `<<<<<<< HEAD` | Your current branch's version starts |
+| `<<<<<<< HEAD` | **Your current branch's** version starts here (`main`) |
 | `=======` | Divider |
-| `>>>>>>> feature-rename` | The incoming branch's version ends |
+| `>>>>>>> feature-rename` | The **incoming** version ends here |
 
-**Steps to resolve:**
+**Step 5. Decide and edit.** Delete the three marker lines and keep the line you want. Say we keep Green Valley:
 
-1. Run `git status` to see which files conflict.
-2. Open the file and **edit it** to the final version you want (remove the 3 marker lines).
-3. Stage it: `git add app.py`
-4. Finish: `git commit` (or `git merge --continue`).
+```python
+from patients import patients
 
-If you panic: `git merge --abort` goes back to before the merge.
+print("Welcome to Green Valley Hospital")
+for name in patients:
+    print("Patient:", name)
+```
+
+(In VS Code you can also click **Accept Current Change**, **Accept Incoming Change**, or **Accept Both Changes**.)
+
+**Step 6. Tell Git it's resolved and finish:**
+
+```bash
+git add app.py
+git commit -m "Resolve rename conflict"
+```
+
+```
+[main f30a138] Resolve rename conflict
+```
+
+**Step 7. Admire the graph:**
+
+```bash
+git log --oneline --graph --all
+```
+
+```
+*   f30a138 Resolve rename conflict
+|\
+| * eb8b2fb Rename hospital to Sunrise
+* | 10be3f4 Rename hospital to Green Valley
+|/
+* 11d0ece Add patient Meena
+* cf39de2 Show patient list and add .gitignore
+* 35ab63e Add welcome message
+```
+
+The two lines split and came back together. That's your merge. 🎉
+
+✅ **Checkpoint 5:** The app runs (`python app.py`), there are **no** `<<<<<<<` lines left in any file, and the graph shows a merge.
 
 > 💡 **Tip**
 >
-> VS Code shows buttons: *Accept Current*, *Accept Incoming*, *Accept Both*. Always **read and test** the code afterwards.
+> If you get scared in the middle of a conflict, run **`git merge --abort`**. It puts everything back to how it was before the merge. You can try again calmly.
 
 ---
 
-### 🧭 6. Good Branch Habits
+### 🧭 4. Good Branch Habits
 
 | Habit | Example |
 |---|---|
-| One branch per task | `feature-login`, `fix-age-validation` |
-| Meaningful names, lowercase, hyphens | `feature/patient-search` |
-| Keep branches short-lived | Merge within days, not months |
-| Keep `main` working | Never commit half-finished code to it |
+| One branch per task | `feature-login`, `fix-age-bug` |
+| Clear names (lowercase, hyphens) | `feature-add-patient` |
+| Keep branches short-lived | Merge in days, not months |
+| Keep `main` always working | Never commit half-done code to it |
+| Delete branches after merging | `git branch -d name` |
 
 ---
 
 ## 💡 Real-Life Analogy
 
-📝 **Writing a book with an editor.**
+📝 **Writing an essay with a friend.**
 
-`main` is the **published manuscript**. You make a **copy** (branch) to rewrite Chapter 3. Meanwhile the editor fixes typos in the main manuscript. When you finish, you **merge** your chapter in. If you both rewrote the **same paragraph**, you sit together and decide which version stays. That is a **merge conflict**.
+`main` is the **final copy**. You make a **photocopy** (branch) to try rewriting the introduction. If you like it, you **replace** the intro in the final copy (merge). If you don't, you **throw the photocopy away**. A **conflict** is when you and your friend both rewrote the **same sentence** in different ways, and you sit together to pick the final sentence.
 
 ---
 
@@ -488,39 +1113,41 @@ If you panic: `git merge --abort` goes back to before the merge.
 
 | Where | Branching |
 |---|---|
-| 🏢 Companies | One branch per ticket or feature |
-| 🚀 Releases | `release/2.0` branch for stabilizing |
-| 🧪 Experiments | Try risky ideas, delete if failed |
-| 🆘 Hotfix | Quick branch to fix a production bug |
-| 🌐 Open source | Contributors work on their own branches |
+| 🏢 Every company | One branch per feature or bug |
+| 🧪 Experiments | Try risky ideas safely, delete if they fail |
+| 🚀 Releases | A `release` branch to stabilize a version |
+| 🆘 Hotfix | A quick branch to fix a live bug |
+| 👥 Teams | Many developers work in parallel without stepping on each other |
 
 ---
 
 ## 🔍 Industry Example
 
-📘 **Scenario: Two developers, one page**
+📘 **Scenario: Two developers, one app**
 
-1. 👩‍💻 Riya creates `feature-search` to add a search box to the patients page.
-2. 👨‍💻 Arjun creates `fix-table-style` to fix the table CSS.
+1. 👩‍💻 Riya creates `feature-search` to add a search box.
+2. 👨‍💻 Arjun creates `fix-table-style` to repair table CSS.
 3. ✅ Arjun finishes first and merges into `main`.
-4. 🔄 Riya finishes later and runs `git merge main` into her branch (or merges into `main`). Both edited `App.css`, so Git reports a **conflict**.
-5. 🧩 Riya opens the file, keeps both sets of CSS, runs `git add App.css`, and commits.
-6. 🎉 `main` now has both the search box and the fixed table.
+4. 🔄 Riya finishes later. Both touched `App.css`, so her merge shows a **conflict**.
+5. 🧩 She opens the file, keeps both sets of CSS, runs `git add App.css`, and commits.
+6. 🎉 `main` now has the search box **and** the fixed table. Neither person lost any work.
 
 ---
 
 ## 📊 Diagram
 
 ```
-                 git switch -c feature-login
- main     A ── B ── C ───────────────── M   ← git merge feature-login
-                     \                 /
- feature-login        D ── E ── F ────
+                 git switch -c feature-add-patient
+  main     ●──────●──────●────────────────────●   ← git merge (fast-forward)
+                           \                  /
+  feature                   ●────────────────      (commit "Add patient Meena")
 
- Conflict flow:
-   git merge ─► CONFLICT ─► edit file ─► git add ─► git commit ─► done
-                    │
-                    └─► (or) git merge --abort ─► back to safety
+
+  CONFLICT FLOW
+  ─────────────
+  git merge ─► CONFLICT ─► open file ─► edit (remove markers) ─► git add
+                  │                                                │
+                  └──► git merge --abort (undo)             git commit ✅
 ```
 
 ---
@@ -529,76 +1156,402 @@ If you panic: `git merge --abort` goes back to before the merge.
 
 | ❌ Wrong Belief | ✅ Correct Understanding |
 |---|---|
-| "A branch is a full copy of my files." | It's a lightweight pointer to a commit. |
-| "I merge `main` into my feature to update main." | `git merge X` brings X **into the current branch**. Switch to the target first. |
-| "Conflict means I broke something." | It's normal. Two people edited the same lines. |
-| "Leave the `<<<<<<<` markers in the file." | Remove all markers, and the code must run. |
-| "Work directly on `main`." | Use a feature branch and merge when it's ready. |
-| "Forgetting which branch I'm on." | Check with `git status` or `git branch`. |
-| "Delete a branch before merging it." | `git branch -d` protects you, but check first. |
+| "A branch is a full copy of my project." | It's a lightweight label. Creating one is instant. |
+| "I run `git merge` on the feature branch to update main." | Switch to the **target** (`main`) first, then merge. |
+| "A conflict means I broke Git." | It's normal when two branches edit the same line. |
+| "Leave the `<<<<<<<` lines in the file." | Delete all markers. The code must run. |
+| "Switch branches with uncommitted work." | Commit first, to avoid confusion. |
+| "I'm on `main`, working on my feature." | Check `git status` or `git branch` before you start. |
+| "Skip `git add` after fixing the conflict." | You must `git add` the file, then `git commit`. |
 
 ---
 
 ## 💬 Interview Corner
 
 **Q1. What is a branch in Git?**
-A lightweight, movable pointer to a commit that lets you develop features independently.
+A lightweight, movable pointer to a commit that allows independent lines of development.
 
-**Q2. What is a merge conflict and how do you resolve it?**
-It happens when two branches change the same lines. You edit the file to the final version, `git add` it, and commit.
+**Q2. What is a merge conflict, and how do you resolve it?**
+It occurs when two branches change the same lines. You edit the file to the version you want, `git add` it, and `git commit`.
 
 **Q3. What is a fast-forward merge?**
-When the target branch has no new commits, Git just moves its pointer forward without creating a merge commit.
+When the target branch has no new commits, Git just moves its pointer ahead. No merge commit is needed.
 
-**Q4. What is `HEAD`?**
-A pointer to the current branch (and so the commit you are working on).
+**Q4. How do you create and switch to a new branch in one command?**
+`git switch -c branch-name`.
 
 ---
 
 ## 📝 Quick Summary
 
-- 🌿 A branch is a separate line of work.
+- 🌿 A branch is a safe, separate line of work.
 - 🆕 `git switch -c name` creates and switches.
-- 🔀 `git merge branch` merges **into the current branch**.
-- ⏩ Fast-forward = pointer move, merge commit = join of two lines.
-- 💥 Conflicts happen on same-line edits. Fix, `add`, `commit`.
-- 🛑 `git merge --abort` cancels a messy merge.
+- 🔁 `git switch name` moves between branches. Files change with it!
+- 🤝 `git merge X` brings X **into the branch you're on**.
+- ⏩ Fast-forward = pointer move. Conflict = same line edited twice.
+- 💥 Fix conflict: edit → `git add` → `git commit`.
+- 🛑 `git merge --abort` cancels a merge.
 - 🧹 Delete merged branches with `git branch -d`.
-- ✅ Keep `main` working at all times.
 
 ---
 
 ## 🎯 Class Activity
 
-**🛠️ Activity: "Create a conflict on purpose"**
+**🛠️ Activity: "Branch, merge, conflict" (about 20 minutes)**
 
-1. In your `git-practice` repo, create `welcome.py` with `print("Welcome to City Hospital")` and commit it.
-2. Create a branch `feature-rename`, change the text to "Sunrise Hospital", and commit.
-3. Switch back to `main`, change the same line to "Green Valley Hospital", and commit.
-4. Run `git merge feature-rename` and see the conflict.
-5. Fix the file, `git add`, and commit.
-6. Run `git log --oneline --graph --all` and look at the shape.
-7. Delete the branch.
+Follow Labs 1, 2, and 3 above in your `hospital-app`. Then **on your own**:
+
+1. Create a branch `feature-doctors` and add a `doctors.py` file (or edit it if you made one). Commit.
+2. Switch to `main` and confirm `doctors.py` is **gone** from the folder (or unchanged).
+3. Merge `feature-doctors` into `main` and delete the branch.
+4. Create a **second conflict** with a classmate's help: each of you changes the same line in a different way on different branches, then merge and resolve.
+5. Run `git log --oneline --graph --all` and explain the picture to a neighbour.
 
 ---
 
-# 📋 Assignments — Branching and Merging
+# 📋 Assignments — Hands-On: Branching and Merging
 
 | Assignment |
 |---|
-| Create three branches (`feature-a`, `feature-b`, `fix-c`), make one commit on each, and show `git branch` output. |
-| Make a fast-forward merge and prove it with `git log --graph` (no merge commit). |
-| Make a merge that creates a merge commit and show the graph. |
-| Create a merge conflict, resolve it manually in VS Code, and write the 4 steps you did. |
-| Start a merge conflict and cancel it using `git merge --abort`. Explain what state your files are in. |
-| Edit a file on `main`, switch to another branch without committing, and explain what Git says. Then fix it by committing or stashing. |
-| Create a branch, delete it safely with `-d`, then try to delete an **unmerged** branch and note what Git says. |
-| Draw (on paper or in text) the commit graph for a project with `main` and two feature branches. |
-| Rename a branch with `git branch -m old new` and show the result. |
-| On your hospital or hotel project, create `feature-search`, make a small change, and merge it back into `main`. |
+| In your `hotel-app` repository, create branches `feature-a` and `feature-b`, make one commit on each, and show `git branch` output. |
+| Do a fast-forward merge and prove it with `git log --oneline --graph`. Write why it was a fast-forward. |
+| Create a merge conflict on purpose, resolve it in VS Code, and write the exact steps you followed. |
+| Start a merge conflict and cancel it with `git merge --abort`. Show `git status` before and after. |
+| Switch between two branches 5 times while keeping `patients.py` open in VS Code, and describe what you saw happen to the file. |
+| Create a branch, make a commit, then delete it with `git branch -d`. Try deleting a branch that has **not** been merged and write what Git says. |
+| Draw (or write in text) the commit graph of your project after 3 branches have been merged. |
+| Rename a branch using `git branch -m old-name new-name` and show the result. |
+| Add a new feature (for example a `search` function) on a branch to your hospital app, test it, and merge it to `main`. |
+| Write a 6-line "branch rules" guide for a team of 3 friends working on one project. |
 
 ---
 ---
+
+# 📚 A First Look at Advanced Git
+
+## 🎯 Learning Objectives
+
+- ↩️ Know the **names** and purposes of the common "undo" tools: `restore`, `revert`, `reset`
+- 🧳 Try `stash` to pause unfinished work
+- 🏷️ Try `tag` to label a version
+- 🕰️ Know that `reflog` is a safety net
+- 🗺️ See what's coming next: **GitHub, push, pull, pull requests**
+
+> 🔎 **Note**
+>
+> This topic is an **introduction only**. Today you learn *what these tools are for*. We will practice them in detail in later sessions.
+
+---
+
+## 📖 Introduction
+
+You now know the core of Git: **init, status, add, commit, log, diff, branch, switch, merge**. That is enough to use Git every day. 🎉
+
+Mistakes will happen, though: wrong edit, wrong file, unfinished work. This topic gives you a **map** of the extra tools, so when you need them, you know they exist.
+
+---
+
+## 🧠 Detailed Notes
+
+### 🗺️ 1. The "Undo" Map
+
+| Situation | Tool | Danger level |
+|---|---|---|
+| I edited a file and want the **old version back** | `git restore file` | ⚠️ Deletes my unsaved edits |
+| I staged a file by mistake | `git restore --staged file` | ✅ Safe |
+| I committed something wrong and want to **cancel it safely** | `git revert <commit>` | ✅ Safe |
+| I want to erase recent commits completely | `git reset` | 🔴 Dangerous (just know it exists) |
+
+---
+
+### 🪜 Mini-Lab A. `git restore` (Discard an Edit)
+
+Make sure your status is clean. Then add a junk line to `app.py` (run these in **Git Bash**, where `echo ... >> file` adds a line to the end of a file):
+
+```bash
+echo 'print("oops")' >> app.py
+git status --short
+```
+
+```
+ M app.py
+```
+
+Undo it:
+
+```bash
+git restore app.py
+git status
+```
+
+```
+nothing to commit, working tree clean
+```
+
+The "oops" line is **gone for good** (Git can't bring back edits that were never committed).
+
+> ⚠️ **Important**
+>
+> `git restore file` is **permanent**. Run `git diff` first to be sure you really want to throw the changes away.
+
+---
+
+### 🪜 Mini-Lab B. `git revert` (Safely Cancel a Commit)
+
+Make a commit by mistake:
+
+```bash
+echo "secret" > bad.txt
+git add bad.txt
+git commit -m "Add bad file"
+```
+
+Cancel it **without rewriting history**:
+
+```bash
+git revert --no-edit HEAD
+```
+
+```
+[main 56d33cf] Revert "Add bad file"
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 bad.txt
+```
+
+`bad.txt` is gone, and `git log --oneline` now shows **both** the mistake and the revert. Nothing was erased, so it is **safe** even in a team.
+
+🤔 **Quick thinking question:** Why does Git add a new "revert" commit instead of just deleting the bad one?
+
+✅ **Answer:** Because history is a **record**. Teammates may already have the bad commit. Adding a new "undo" commit keeps everyone's history consistent. (Deleting commits, as `reset` does, is risky on shared work.)
+
+---
+
+### 🧳 2. `git stash`: Pause Unfinished Work
+
+Imagine you're halfway through an edit and must switch branches urgently. Use the stash drawer:
+
+```bash
+echo "work in progress" >> patients.py
+git stash
+```
+
+```
+Saved working directory and index state WIP on main: f30a138 Resolve rename conflict
+```
+
+Your folder is clean again. Do your urgent work, then bring the edit back:
+
+```bash
+git stash pop
+```
+
+```
+Changes not staged for commit:
+	modified:   patients.py
+```
+
+Clean up the practice edit afterwards:
+
+```bash
+git restore patients.py
+```
+
+---
+
+### 🏷️ 3. `git tag`: Label a Version
+
+A **tag** is a permanent name for a commit, usually a version number.
+
+```bash
+git tag v1.0
+git tag
+```
+
+```
+v1.0
+```
+
+Companies tag every release (`v1.0`, `v1.1`, `v2.0`) so they can always find exactly what was shipped.
+
+---
+
+### 🕰️ 4. Just Know These Names (Introduction Only)
+
+| Tool | One-line meaning | When you'll meet it |
+|---|---|---|
+| `git reset` | Move the branch backward, erasing commits | Later, with care |
+| `git reflog` | A diary of where Git's pointers have been. Can rescue "lost" commits | When you panic |
+| `git commit --amend` | Fix the **last** commit's message or contents | Before sharing |
+| `git rebase` | Replay your commits on top of another branch (a cleaner alternative to merge) | Advanced |
+| `git cherry-pick` | Copy one specific commit to another branch | Advanced |
+| `git blame` | Who last changed each line of a file | Debugging |
+
+> 💡 **Tip**
+>
+> You don't need these today. Just remember: **committed work is very hard to lose**. If you ever think you've lost something, ask before trying clever commands.
+
+---
+
+### 🌐 5. What's Next: GitHub
+
+So far, your project exists **only on your laptop**. If the laptop breaks, it's gone, and no teammate can see it. Next session, we connect to **GitHub**:
+
+| Command / feature | Purpose |
+|---|---|
+| `git remote add origin URL` | Link your project to GitHub |
+| `git push` | Upload your commits |
+| `git pull` | Download teammates' commits |
+| `git clone` | Copy a GitHub project to your laptop |
+| **Pull Request** | Ask teammates to review and merge your branch |
+
+---
+
+### 🧰 6. Command Cheat Sheet (Everything from Today)
+
+| Command | What it does |
+|---|---|
+| `git init` | Start a repository |
+| `git status` | Show what changed |
+| `git add file` / `git add .` | Stage changes |
+| `git commit -m "msg"` | Save a snapshot |
+| `git log --oneline` | Show history |
+| `git diff` | Show unstaged changes |
+| `git branch` | List branches |
+| `git switch -c name` | Create and switch branch |
+| `git switch name` | Switch branch |
+| `git merge name` | Merge `name` into the current branch |
+| `git branch -d name` | Delete a merged branch |
+| `git restore file` | Discard edits |
+| `git revert HEAD` | Safely cancel the last commit |
+| `git stash` / `git stash pop` | Pause and resume work |
+| `git tag v1.0` | Label a version |
+
+---
+
+## 💡 Real-Life Analogy
+
+✍️ **Editing a handwritten letter.**
+
+- `restore` = throwing away your rough draft and going back to the neat copy.
+- `revert` = sending a **second letter** that says "ignore my previous letter". Nothing is secretly erased.
+- `stash` = putting a half-written letter **in a drawer** while you answer the doorbell.
+- `tag` = putting a **sticky note** on the final version: "Version 1".
+- `reset` = tearing up a letter (powerful, but dangerous!).
+
+---
+
+## 💻 Real-World Application
+
+| Where | Used for |
+|---|---|
+| 🚨 Production bug | `revert` the faulty release quickly |
+| 🔀 Interruption | `stash`, fix the urgent bug, come back |
+| 🚀 Releases | Tags like `v2.3.1` mark exactly what was shipped |
+| 🕵️ Debugging | `blame` and `log` find where a bug started |
+| 🌐 Teams | Push, pull, and pull requests (the next session) |
+
+---
+
+## 🔍 Industry Example
+
+📘 **Scenario: A bad deployment at 5 PM**
+
+1. 🔥 Staff report the patient page crashes after today's release.
+2. 🔎 The lead runs `git log --oneline` and finds the commit "Change patient API response".
+3. ↩️ She runs `git revert <commit>`. Git creates a new commit that undoes it.
+4. 🚀 The previous working behaviour is live again within minutes.
+5. 🧪 The original developer fixes the problem on a **branch**, tests it, and merges it the next day.
+6. 🏷️ The team tags the fixed release `v1.4.1`. History shows exactly what happened, with nothing erased.
+
+---
+
+## 📊 Diagram
+
+```
+   Where is the mistake?                 Tool
+ ┌─────────────────────────────┐
+ │ Edited, not staged          │ ───►  git restore file
+ │ Staged, not committed       │ ───►  git restore --staged file
+ │ Committed (even if shared)  │ ───►  git revert <commit>   ✅ safe
+ │ Unfinished, need to switch  │ ───►  git stash / git stash pop
+ │ Want to label a version     │ ───►  git tag v1.0
+ └─────────────────────────────┘
+
+   revert:   A─B─C─D        becomes   A─B─C─D─D'   (D' cancels D, history kept)
+```
+
+---
+
+## ⚠️ Common Mistakes
+
+| ❌ Wrong Belief | ✅ Correct Understanding |
+|---|---|
+| "`git restore` can be undone." | Discarded uncommitted edits are gone. Check `git diff` first. |
+| "`revert` deletes the bad commit." | It adds a new commit that cancels it. |
+| "`git reset --hard` is a harmless undo." | It can destroy work. Don't use it until you are taught. |
+| "Stash is permanent storage." | It's a temporary drawer. Pop it soon. |
+| "I need all these commands today." | The basic 9 commands are enough for daily work. |
+| "Tags and branches are the same." | A branch moves as you commit. A tag stays on one commit forever. |
+
+---
+
+## 💬 Interview Corner
+
+**Q1. What is the difference between `git revert` and `git reset`?**
+`revert` adds a new commit that undoes an earlier one and keeps history. `reset` moves the branch backward and erases commits, which is risky on shared branches.
+
+**Q2. What does `git stash` do?**
+It temporarily saves your uncommitted changes and gives you a clean working directory. `git stash pop` brings them back.
+
+**Q3. What is a Git tag?**
+A permanent label on a specific commit, commonly used for release versions such as `v1.0`.
+
+**Q4. What is the difference between `git fetch`/`pull` and `git push`?**
+`pull` downloads and merges remote changes, and `push` uploads your commits to a remote like GitHub. (We cover this next session.)
+
+---
+
+## 📝 Quick Summary
+
+- ↩️ `git restore file` discards edits (⚠️ permanent).
+- 🔄 `git revert` is the **safe** way to cancel a commit.
+- 🧨 `git reset` erases commits. Just know it exists.
+- 🧳 `git stash` and `git stash pop` pause and resume work.
+- 🏷️ `git tag v1.0` labels a version.
+- 🕰️ `reflog`, `rebase`, `cherry-pick`, and `blame` are **names to remember** for later.
+- 🌐 Next: **GitHub** with push, pull, clone, and pull requests.
+- 💾 Commit often. Committed work is hard to lose.
+
+---
+
+## 🎯 Class Activity
+
+**🛠️ Activity: "Try each tool once" (about 10 minutes)**
+
+In your `hospital-app`:
+
+1. Add a junk line to `app.py`, check `git status`, then discard it with `git restore`.
+2. Commit a file called `bad.txt`, then cancel it with `git revert --no-edit HEAD`. Look at `git log --oneline`.
+3. Edit `patients.py`, then `git stash`. Check that the file is back to normal. Then `git stash pop`.
+4. Restore the practice edit, then create a tag: `git tag v1.0`, and list tags with `git tag`.
+5. Run `git log --oneline --graph --all` one last time and compare it with a neighbour's.
+
+---
+
+# 📋 Assignments — A First Look at Advanced Git
+
+| Assignment |
+|---|
+| Edit a file, discard the change with `git restore`, and write why you can't get it back. |
+| Stage a file by mistake and unstage it with `git restore --staged`. Show `git status` before and after. |
+| Commit a wrong file, then cancel it with `git revert`. Paste `git log --oneline` and explain each line. |
+| Explain in 5 lines why `revert` is safer than `reset` for a team project. |
+| Use `git stash` in the middle of an edit, switch to another branch, come back, and `git stash pop`. Describe each step. |
+| Create tags `v1.0` and `v1.1` on two different commits, and use `git log --oneline` to show where each tag is. |
+| Run `git show <tag>` and write what information you see. |
+| Research (briefly) one of `rebase`, `cherry-pick`, or `reflog`, and write 5 lines about what it does. No need to practice yet. |
+| Print the cheat sheet from this topic, and write one line beside each command in your own words. |
+| Create a complete practice project from scratch: `git init`, 3 commits, 1 feature branch, 1 merge, and 1 tag. Submit a screenshot of `git log --oneline --graph --all`. |
 
 # 📚 GitHub and Remote Repositories
 
@@ -622,6 +1575,10 @@ So far, Git lived only on **your laptop**. If your laptop breaks, everything is 
 **Why is it important?** It gives you **backup**, **sharing**, **collaboration**, and a **portfolio** that recruiters can see.
 
 **Where is it used?** Every company and open-source project hosts code on GitHub, GitLab, or Bitbucket.
+
+> 🔎 **Note**
+>
+> This topic continues from the local Git session. You will upload the **same `hospital-app` project** (with all its commits and branches) that you built on your laptop.
 
 ---
 
@@ -688,6 +1645,11 @@ GitHub **no longer accepts your account password** for `git push` over HTTPS. Us
 |---|---|---|
 | **HTTPS + Personal Access Token (PAT)** | GitHub → Settings → Developer settings → Personal access tokens. Use the token as the password. Git Credential Manager (installed with Git on Windows) remembers it. | Easiest start |
 | **SSH key** | Generate a key and add the **public** key to GitHub | Long-term, no repeated logins |
+
+
+> 🪟 **On Windows**
+>
+> Git for Windows includes **Git Credential Manager**. On your first `git push` over HTTPS, a **browser sign-in window** opens. Log in to GitHub and click **Authorize**. Windows then remembers you, so you usually **don't need to create a token by hand**. The SSH commands below also work in **Git Bash**.
 
 **SSH setup (optional):**
 
@@ -863,7 +1825,7 @@ It copies a remote repository, including its full history, to your computer.
 
 **🛠️ Activity: "Put your project on GitHub"**
 
-1. Create a GitHub account and a new **empty** repository named `git-practice`.
+1. Create a GitHub account and a new **empty** repository named `hospital-app`.
 2. In your local repo, run `git remote add origin <your URL>`.
 3. Run `git push -u origin main`, signing in with a token or SSH key.
 4. Refresh the GitHub page and see your files and commit history.
@@ -878,7 +1840,7 @@ It copies a remote repository, including its full history, to your computer.
 | Assignment |
 |---|
 | Create a GitHub account, add a profile picture and short bio, and share your profile URL. |
-| Push your `git-practice` repo to GitHub and share a screenshot of the commit list on GitHub. |
+| Push your `hospital-app` repo to GitHub and share a screenshot of the commit list on GitHub. |
 | Create a Personal Access Token (or SSH key), use it to push, and write which one you chose and why. (Do not share the token!) |
 | Write a README for your hotel or hospital project with title, features, how to run, and tech stack. |
 | Make a commit on GitHub's website (edit a file), then run `git pull` and show it appears locally. |
@@ -1173,306 +2135,3 @@ It combines all commits of a PR into a single commit on `main`, keeping history 
 | Turn on a branch protection rule requiring a PR before merging and try pushing directly to `main`. Note the result. |
 | Create a conflict between two PRs, resolve it on your branch, and write the steps. |
 | Write a PR template file (`.github/pull_request_template.md`) with What / Why / How to test sections. |
-
----
----
-
-# 📚 Undoing Changes and Useful Git Commands
-
-## 🎯 Learning Objectives
-
-- ↩️ Undo mistakes safely at every stage
-- 📂 Discard changes, unstage files, and amend commits
-- 🧨 Understand `reset` vs `revert`
-- 🧳 Use `stash` to save unfinished work
-- 🏷️ Tag releases
-- 🕰️ Use `reflog` as a safety net
-
----
-
-## 📖 Introduction
-
-Everyone makes mistakes: wrong file committed, bad commit message, broken code. The best thing about Git is that **almost everything can be undone**, if you choose the right command.
-
-**Why is it important?** Knowing how to undo calmly separates confident developers from scared ones.
-
-**Where is it used?** Daily. Every developer undoes, amends, or stashes something every week.
-
----
-
-## 🧠 Detailed Notes
-
-### 🗺️ 1. Which Undo Do I Need?
-
-| Situation | Command |
-|---|---|
-| Edited a file, want to **discard** the edit | `git restore file` |
-| Staged a file by mistake, want to **unstage** | `git restore --staged file` |
-| Last commit has a typo in the message | `git commit --amend -m "new msg"` |
-| Forgot a file in the last commit | `git add file` then `git commit --amend --no-edit` |
-| Undo a commit **already pushed** (shared) | `git revert <hash>` |
-| Undo local commits and rewrite history | `git reset` |
-| Not ready to commit but need to switch branch | `git stash` |
-
----
-
-### 📂 2. Discard and Unstage
-
-```bash
-git restore app.py              # throw away unsaved edits in app.py
-git restore --staged app.py     # unstage (keeps your edits)
-```
-
-> ⚠️ **Important**
->
-> `git restore file` **permanently deletes** uncommitted edits. There is no undo for it. Check with `git diff` first.
-
----
-
-### ✏️ 3. Amend the Last Commit
-
-```bash
-git commit --amend -m "Add patient search feature"
-```
-
-> ⚠️ **Important**
->
-> Amend **rewrites** the commit. Only do it for commits that are **not pushed yet**.
-
----
-
-### 🧨 4. `reset`: Move Backwards
-
-`git reset` moves the current branch back to an earlier commit.
-
-| Mode | Commits | Staging area | Your files |
-|---|---|---|---|
-| `--soft` | removed | **kept** (staged) | kept |
-| `--mixed` (default) | removed | cleared | **kept** |
-| `--hard` | removed | cleared | **deleted** ⚠️ |
-
-```bash
-git reset --soft HEAD~1     # undo last commit, keep changes staged
-git reset HEAD~1            # undo last commit, keep changes unstaged
-git reset --hard HEAD~1     # undo last commit AND destroy changes
-```
-
-`HEAD~1` means "one commit before the current one".
-
-> ⚠️ **Important**
->
-> Don't `reset` commits that you have already **pushed** and others may have pulled. It rewrites shared history.
-
----
-
-### 🔄 5. `revert`: The Safe Undo for Shared Commits
-
-`git revert` creates a **new commit** that does the opposite of an old commit. History is kept intact.
-
-```bash
-git log --oneline           # find the hash, e.g. a1b2c3d
-git revert a1b2c3d
-git push
-```
-
-| | `reset` | `revert` |
-|---|---|---|
-| How | Moves branch back (erases commits from the branch) | Adds a new commit that cancels an old one |
-| History | Rewritten | Preserved |
-| Safe after push? | ❌ No | ✅ Yes |
-
-🤔 **Quick thinking question:** A buggy commit is already on GitHub `main` and teammates pulled it. `reset` or `revert`?
-
-✅ **Answer:** `revert`. It adds a new commit without rewriting history that teammates already have.
-
----
-
-### 🧳 6. `stash`: Pause Your Work
-
-You are in the middle of something but need to switch branches urgently:
-
-```bash
-git stash                   # hide current changes
-git switch hotfix-branch    # do the urgent work...
-git switch feature-search
-git stash list              # see saved stashes
-git stash pop               # bring the changes back
-```
-
----
-
-### 🏷️ 7. Tags: Marking Releases
-
-A **tag** is a permanent label for a commit, such as a version number.
-
-```bash
-git tag v1.0
-git tag -a v1.1 -m "Release 1.1"
-git tag                     # list tags
-git push origin v1.0        # share a tag (or: git push --tags)
-```
-
----
-
-### 🕰️ 8. `reflog`: Your Safety Net
-
-Even after a `reset --hard`, Git remembers where `HEAD` has been for a while:
-
-```bash
-git reflog                  # list recent HEAD positions
-git reset --hard <hash>     # jump back to a lost commit
-```
-
-Committed work is very hard to lose. **Uncommitted** work is not recoverable, so commit often.
-
----
-
-### 🧰 9. Handy Extras
-
-| Command | Use |
-|---|---|
-| `git show <hash>` | See what a commit changed |
-| `git blame file` | Who last changed each line |
-| `git log --author="Name"` | Filter history |
-| `git rm file` | Delete a file and stage the deletion |
-| `git mv old new` | Rename a file |
-| `git branch -vv` | See which branches track which remote |
-| `git clean -n` | Preview untracked files that would be deleted |
-
----
-
-## 💡 Real-Life Analogy
-
-✍️ **Editing a handwritten letter.**
-
-- `restore` = throwing away your **rough draft** and starting from the neat copy.
-- `amend` = fixing a typo on the letter **before posting**.
-- `revert` = sending a **second letter** that says "ignore my previous letter" (history stays, nothing is secretly erased).
-- `reset` = **tearing up** a letter that hasn't left your house.
-- `stash` = putting the half-written letter **in a drawer** while you answer the doorbell.
-
----
-
-## 💻 Real-World Application
-
-| Where | Used for |
-|---|---|
-| 🚨 Production bug | `git revert` the faulty release commit quickly |
-| 🤦 Wrong commit message | `--amend` before pushing |
-| 🔀 Context switch | `stash` while handling an urgent bug |
-| 🚀 Releases | Tags like `v2.3.1` mark exactly what was shipped |
-| 🕵️ Debugging | `blame` and `show` find the origin of a bug |
-
----
-
-## 🔍 Industry Example
-
-📘 **Scenario: A bad deployment at 5 PM**
-
-1. 🔥 Staff report that the patient page crashes after today's release.
-2. 🔎 The lead runs `git log --oneline` and finds `f4e9a1c "Change patient API response"`.
-3. ↩️ She runs `git revert f4e9a1c`, which creates a new commit undoing the change.
-4. ⬆️ She pushes. The deploy pipeline releases the reverted version in minutes.
-5. 🧪 The developer who wrote the original commit fixes it on a **branch**, tests it, and sends a new PR the next day.
-6. 🏷️ After the fix, the team tags `v1.4.1`.
-
-History shows exactly what happened, and nothing was rewritten.
-
----
-
-## 📊 Diagram
-
-```
-   Where is the mistake?                    Fix
- ┌──────────────────────────┐
- │ Edited, not staged       │ ───────────► git restore file
- ├──────────────────────────┤
- │ Staged, not committed    │ ───────────► git restore --staged file
- ├──────────────────────────┤
- │ Committed, not pushed    │ ───────────► git commit --amend  /  git reset
- ├──────────────────────────┤
- │ Pushed (shared)          │ ───────────► git revert <hash>
- ├──────────────────────────┤
- │ Unfinished, must switch  │ ───────────► git stash / git stash pop
- └──────────────────────────┘
-
-   reset:   A─B─C─D          ► A─B─C          (D is removed)
-   revert:  A─B─C─D          ► A─B─C─D─D'     (D' undoes D)
-```
-
----
-
-## ⚠️ Common Mistakes
-
-| ❌ Wrong Belief | ✅ Correct Understanding |
-|---|---|
-| "`git reset --hard` is a harmless undo." | It deletes uncommitted work permanently. |
-| "I can `reset` a pushed commit." | It rewrites shared history. Use `revert`. |
-| "`git restore` can be undone." | Discarded uncommitted edits are gone. Check `git diff` first. |
-| "`--amend` is fine after pushing." | It rewrites the commit and causes trouble for teammates. |
-| "Stash is permanent storage." | It's temporary. Pop it soon. |
-| "Reverting deletes the bad commit." | It adds a new commit that cancels it. |
-| "Lost commits are gone forever." | `git reflog` often brings them back. |
-
----
-
-## 💬 Interview Corner
-
-**Q1. What is the difference between `git reset` and `git revert`?**
-`reset` moves the branch back and rewrites history. `revert` adds a new commit that undoes an earlier one, so it is safe for shared branches.
-
-**Q2. What does `git stash` do?**
-It saves your uncommitted changes temporarily and gives you a clean working directory, so you can restore them later with `git stash pop`.
-
-**Q3. How do you change the last commit message?**
-`git commit --amend -m "new message"` (only if it hasn't been pushed).
-
-**Q4. What is a Git tag?**
-A named, permanent pointer to a commit, commonly used to mark release versions.
-
----
-
-## 📝 Quick Summary
-
-- ↩️ `git restore file` discards edits, `--staged` unstages.
-- ✏️ `git commit --amend` fixes the last commit (before pushing).
-- 🧨 `git reset` rewrites local history. `--hard` deletes changes.
-- 🔄 `git revert` safely undoes a pushed commit.
-- 🧳 `git stash` and `git stash pop` pause and resume work.
-- 🏷️ Tags mark versions like `v1.0`.
-- 🕰️ `git reflog` can rescue "lost" commits.
-- 💾 Commit often. Committed work is much safer.
-
----
-
-## 🎯 Class Activity
-
-**🛠️ Activity: "Break it, then fix it"**
-
-In `git-practice`:
-
-1. Edit `hello.py`, then discard the edit with `git restore`.
-2. Stage a file, then unstage it with `git restore --staged`.
-3. Make a commit with a typo in the message, then fix it with `--amend`.
-4. Make 3 commits. Use `git reset --soft HEAD~1`, check `git status`, and recommit.
-5. Make a "bad" commit, find its hash, and undo it with `git revert`.
-6. Start editing a file, run `git stash`, check the folder is clean, then `git stash pop`.
-7. Create a tag `v1.0`, then push it with `git push origin v1.0`.
-8. Run `git reflog` and find an earlier commit.
-
----
-
-# 📋 Assignments — Undoing Changes and Useful Git Commands
-
-| Assignment |
-|---|
-| Edit a file, discard the change with `git restore`, and explain why it can't be undone afterwards. |
-| Stage two files by mistake and unstage them using `git restore --staged`. |
-| Make a commit with a spelling mistake in the message and fix it using `git commit --amend`. |
-| Use `git reset --soft`, `--mixed`, and `--hard` on three test commits and write what happened to your files each time. |
-| Push a "bad" commit to GitHub, then undo it with `git revert` and push again. Show the history. |
-| Explain, in 5 lines, why `revert` is better than `reset` for pushed commits. |
-| Use `git stash` to switch branches in the middle of an edit, then `git stash pop` and show the result. |
-| Create two tags, `v1.0` and `v1.1`, push them, and find them on GitHub's Releases or Tags page. |
-| Do a `git reset --hard` to lose a commit on purpose, then recover it using `git reflog`. |
-| Use `git blame` and `git show` to find who last changed a specific line in a file and what else was in that commit. |
