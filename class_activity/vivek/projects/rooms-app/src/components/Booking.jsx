@@ -1,15 +1,23 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 
 
 function BookingList() {
   const [bookings, setBookings] = useState([])
 
+
+  useEffect(() => {
+    console.log("this is something")
+  }, [bookings])
+
+
   function addBooking() {
     const newBooking = { id: Date.now(), name: "Asha", room: 101 }
     console.log([...bookings, newBooking])
     setBookings([...bookings, newBooking])
   }
+
+  data = fetch
 
   function removeBooking(id) {
     setBookings(bookings.filter((b) => b.id !== id))
